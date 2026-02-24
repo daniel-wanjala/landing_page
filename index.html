@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AdsKE — Meta Ads for Kenyan SMEs</title>
+<title>AdsPro KE — Meta Ads for Kenyan SMEs</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -24,7 +24,6 @@
     overflow-x: hidden;
   }
 
-  /* NOISE OVERLAY */
   body::before {
     content: '';
     position: fixed;
@@ -43,7 +42,7 @@
     padding: 24px 5%;
     position: sticky;
     top: 0;
-    background: rgba(10,10,10,0.85);
+    background: rgba(10,10,10,0.9);
     backdrop-filter: blur(12px);
     z-index: 100;
     border-bottom: 1px solid #1a1a1a;
@@ -56,7 +55,6 @@
     color: var(--accent);
     letter-spacing: -1px;
   }
-
   .logo span { color: var(--text); }
 
   .nav-cta {
@@ -69,12 +67,11 @@
     text-decoration: none;
     transition: transform 0.2s, background 0.2s;
   }
-
   .nav-cta:hover { transform: scale(1.05); background: var(--accent); }
 
   /* HERO */
   .hero {
-    min-height: 92vh;
+    min-height: 95vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -86,10 +83,8 @@
   .hero::after {
     content: '';
     position: absolute;
-    top: -200px;
-    right: -200px;
-    width: 600px;
-    height: 600px;
+    top: -200px; right: -200px;
+    width: 600px; height: 600px;
     background: radial-gradient(circle, rgba(0,200,83,0.12) 0%, transparent 70%);
     pointer-events: none;
   }
@@ -102,13 +97,15 @@
     border: 1px solid rgba(0,200,83,0.3);
     color: var(--green);
     font-size: 0.8rem;
-    font-weight: 500;
+    font-weight: 600;
     padding: 6px 14px;
     border-radius: 100px;
     margin-bottom: 32px;
     width: fit-content;
     animation: fadeUp 0.6s ease forwards;
     opacity: 0;
+    letter-spacing: 1px;
+    text-transform: uppercase;
   }
 
   .pulse {
@@ -125,11 +122,11 @@
 
   h1 {
     font-family: 'Syne', sans-serif;
-    font-size: clamp(2.8rem, 7vw, 6rem);
+    font-size: clamp(2.6rem, 6.5vw, 5.5rem);
     font-weight: 800;
     line-height: 1.05;
     letter-spacing: -2px;
-    max-width: 800px;
+    max-width: 860px;
     animation: fadeUp 0.6s 0.15s ease forwards;
     opacity: 0;
   }
@@ -142,18 +139,47 @@
   .hero-sub {
     font-size: clamp(1rem, 2vw, 1.2rem);
     color: var(--muted);
-    max-width: 520px;
-    margin-top: 24px;
-    line-height: 1.7;
+    max-width: 560px;
+    margin-top: 28px;
+    line-height: 1.8;
     font-weight: 300;
     animation: fadeUp 0.6s 0.3s ease forwards;
     opacity: 0;
   }
 
+  .hero-sub strong {
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  /* FOMO STRIP */
+  .fomo-strip {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255,60,60,0.08);
+    border: 1px solid rgba(255,60,60,0.25);
+    color: #FF6B6B;
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 8px 18px;
+    border-radius: 100px;
+    margin-top: 24px;
+    animation: fadeUp 0.6s 0.35s ease forwards;
+    opacity: 0;
+  }
+
+  .fomo-dot {
+    width: 8px; height: 8px;
+    background: #FF6B6B;
+    border-radius: 50%;
+    animation: pulse 1s infinite;
+  }
+
   .hero-actions {
     display: flex;
     gap: 16px;
-    margin-top: 40px;
+    margin-top: 36px;
     flex-wrap: wrap;
     animation: fadeUp 0.6s 0.45s ease forwards;
     opacity: 0;
@@ -173,11 +199,7 @@
     transition: transform 0.2s, box-shadow 0.2s;
     box-shadow: 0 0 30px rgba(0,200,83,0.3);
   }
-
-  .btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 0 50px rgba(0,200,83,0.5);
-  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 50px rgba(0,200,83,0.5); }
 
   .btn-secondary {
     display: inline-flex;
@@ -192,13 +214,11 @@
     border: 1px solid #2a2a2a;
     transition: border-color 0.2s, background 0.2s;
   }
-
   .btn-secondary:hover { border-color: var(--green); background: rgba(0,200,83,0.05); }
 
   /* STAT STRIP */
   .stat-strip {
     display: flex;
-    gap: 0;
     border-top: 1px solid #1a1a1a;
     border-bottom: 1px solid #1a1a1a;
     overflow: hidden;
@@ -208,10 +228,9 @@
     flex: 1;
     padding: 32px 5%;
     border-right: 1px solid #1a1a1a;
-    animation: fadeUp 0.6s ease forwards;
     opacity: 0;
+    animation: fadeUp 0.6s ease forwards;
   }
-
   .stat:last-child { border-right: none; }
 
   .stat-num {
@@ -221,15 +240,9 @@
     color: var(--accent);
     letter-spacing: -1px;
   }
+  .stat-label { font-size: 0.85rem; color: var(--muted); margin-top: 6px; line-height: 1.4; }
 
-  .stat-label {
-    font-size: 0.85rem;
-    color: var(--muted);
-    margin-top: 6px;
-    line-height: 1.4;
-  }
-
-  /* SECTION */
+  /* SECTIONS */
   section { padding: 100px 5%; }
 
   .section-tag {
@@ -247,12 +260,35 @@
     font-weight: 800;
     letter-spacing: -1px;
     line-height: 1.1;
-    max-width: 600px;
+    max-width: 680px;
   }
-
   h2 em { font-style: normal; color: var(--accent); }
 
-  /* WHO WE SERVE */
+  /* WINNER SOCIAL PROOF */
+  .winner-section { background: #0D0D0D; }
+
+  .winner-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-top: 48px;
+  }
+
+  .winner-card {
+    background: var(--card);
+    border: 1px solid #222;
+    border-radius: 16px;
+    padding: 24px 20px;
+    transition: border-color 0.2s;
+  }
+  .winner-card:hover { border-color: var(--green); }
+
+  .winner-icon { font-size: 1.8rem; margin-bottom: 12px; }
+  .winner-niche { font-size: 0.75rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); margin-bottom: 8px; }
+  .winner-text { font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
+  .winner-result { font-size: 0.9rem; font-weight: 700; color: var(--text); margin-top: 12px; }
+
+  /* NICHES */
   .niches {
     display: flex;
     gap: 12px;
@@ -271,15 +307,12 @@
     font-size: 0.9rem;
     font-weight: 500;
     transition: border-color 0.2s, background 0.2s;
-    cursor: default;
   }
-
   .niche-pill:hover { border-color: var(--green); background: rgba(0,200,83,0.05); }
-
   .niche-icon { font-size: 1.2rem; }
 
-  /* OFFER CARD */
-  .offer-section { background: #0D0D0D; }
+  /* OFFER */
+  .offer-section { background: #0A0A0A; }
 
   .offer-card {
     background: var(--card);
@@ -308,48 +341,21 @@
     letter-spacing: -2px;
     line-height: 1;
   }
+  .offer-price span { font-size: 1.2rem; color: var(--muted); font-family: 'DM Sans', sans-serif; font-weight: 400; letter-spacing: 0; }
 
-  .offer-price span {
-    font-size: 1.2rem;
-    color: var(--muted);
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 400;
-    letter-spacing: 0;
-  }
+  .offer-desc { color: var(--muted); margin: 12px 0 36px; font-size: 1rem; line-height: 1.6; }
 
-  .offer-desc {
-    color: var(--muted);
-    margin: 12px 0 36px;
-    font-size: 1rem;
-    line-height: 1.6;
-  }
+  .offer-list { list-style: none; display: flex; flex-direction: column; gap: 16px; margin-bottom: 40px; }
 
-  .offer-list {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    margin-bottom: 40px;
-  }
-
-  .offer-list li {
-    display: flex;
-    align-items: flex-start;
-    gap: 14px;
-    font-size: 0.95rem;
-    line-height: 1.5;
-  }
+  .offer-list li { display: flex; align-items: flex-start; gap: 14px; font-size: 0.95rem; line-height: 1.5; }
 
   .check {
     width: 22px; height: 22px;
     background: rgba(0,200,83,0.15);
     border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-    margin-top: 1px;
-    color: var(--green);
-    font-size: 0.75rem;
-    font-weight: 700;
+    flex-shrink: 0; margin-top: 1px;
+    color: var(--green); font-size: 0.75rem; font-weight: 700;
   }
 
   .bonus-badge {
@@ -359,10 +365,8 @@
     background: rgba(0,200,83,0.1);
     border: 1px solid rgba(0,200,83,0.3);
     color: var(--green);
-    font-size: 0.85rem;
-    font-weight: 600;
-    padding: 10px 18px;
-    border-radius: 12px;
+    font-size: 0.85rem; font-weight: 600;
+    padding: 10px 18px; border-radius: 12px;
     margin-bottom: 32px;
   }
 
@@ -370,43 +374,20 @@
   .steps {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 2px;
-    margin-top: 64px;
-    background: #1a1a1a;
-    border-radius: 20px;
-    overflow: hidden;
+    gap: 2px; margin-top: 64px;
+    background: #1a1a1a; border-radius: 20px; overflow: hidden;
   }
 
-  .step {
-    background: var(--dark);
-    padding: 40px 32px;
-    position: relative;
-  }
-
-  .step-num {
-    font-family: 'Syne', sans-serif;
-    font-size: 3rem;
-    font-weight: 800;
-    color: #1e1e1e;
-    line-height: 1;
-    margin-bottom: 20px;
-  }
-
-  .step-title {
-    font-family: 'Syne', sans-serif;
-    font-size: 1.1rem;
-    font-weight: 700;
-    margin-bottom: 10px;
-  }
-
+  .step { background: var(--dark); padding: 40px 32px; }
+  .step-num { font-family: 'Syne', sans-serif; font-size: 3rem; font-weight: 800; color: #1e1e1e; line-height: 1; margin-bottom: 20px; }
+  .step-title { font-family: 'Syne', sans-serif; font-size: 1.1rem; font-weight: 700; margin-bottom: 10px; }
   .step-desc { font-size: 0.875rem; color: var(--muted); line-height: 1.6; }
 
-  /* CTA */
+  /* BIG CTA */
   .cta-section {
     text-align: center;
-    background: linear-gradient(180deg, #0A0A0A 0%, #0f1a0f 100%);
-    position: relative;
-    overflow: hidden;
+    background: linear-gradient(180deg, #0A0A0A 0%, #071a07 100%);
+    position: relative; overflow: hidden;
   }
 
   .cta-section::before {
@@ -414,17 +395,37 @@
     position: absolute;
     top: 50%; left: 50%;
     transform: translate(-50%, -50%);
-    width: 500px; height: 500px;
+    width: 600px; height: 600px;
     background: radial-gradient(circle, rgba(0,200,83,0.1) 0%, transparent 70%);
     pointer-events: none;
   }
 
-  .cta-section h2 { max-width: 100%; margin: 0 auto 16px; }
+  .cta-section h2 { max-width: 100%; margin: 0 auto 20px; font-size: clamp(2rem, 5vw, 4rem); }
 
-  .cta-section p {
+  .cta-body {
+    max-width: 620px;
+    margin: 0 auto 40px;
+    font-size: 1.1rem;
+    line-height: 1.85;
     color: var(--muted);
-    font-size: 1.05rem;
-    margin-bottom: 40px;
+    position: relative;
+  }
+
+  .cta-body strong { color: var(--text); }
+  .cta-body .highlight { color: var(--accent); font-weight: 700; }
+
+  .cta-warning {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,60,60,0.1);
+    border: 1px solid rgba(255,60,60,0.3);
+    color: #FF6B6B;
+    font-size: 0.9rem;
+    font-weight: 700;
+    padding: 10px 22px;
+    border-radius: 100px;
+    margin-bottom: 32px;
   }
 
   /* FOOTER */
@@ -434,10 +435,9 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    flex-wrap: gap;
+    flex-wrap: wrap;
     gap: 16px;
   }
-
   footer p { font-size: 0.8rem; color: var(--muted); }
 
   /* ANIMATIONS */
@@ -451,14 +451,12 @@
     transform: translateY(30px);
     transition: opacity 0.7s ease, transform 0.7s ease;
   }
-
   .reveal.visible { opacity: 1; transform: translateY(0); }
 
   /* WA FLOAT */
   .wa-float {
     position: fixed;
-    bottom: 28px;
-    right: 28px;
+    bottom: 28px; right: 28px;
     width: 58px; height: 58px;
     background: #25D366;
     border-radius: 50%;
@@ -470,9 +468,7 @@
     animation: fadeUp 1s 1s ease forwards;
     opacity: 0;
   }
-
   .wa-float:hover { transform: scale(1.1); }
-
   .wa-float svg { width: 30px; height: 30px; fill: white; }
 
   @media (max-width: 640px) {
@@ -487,22 +483,33 @@
 
 <!-- NAV -->
 <nav>
-  <div class="logo">Ads<span>KE</span></div>
-  <a href="https://whatsapp.com/channel/0029VbAXJQn3WHTOUNUjAf1W" target="_blank" class="nav-cta">Get Started →</a>
+  <div class="logo">AdsPro<span>KE</span>🇰🇪</div>
+  <a href="https://chat.whatsapp.com/ICxJ7ujpxwY7VguIvQYix2" target="_blank" class="nav-cta">Join the Group →</a>
 </nav>
 
 <!-- HERO -->
 <section class="hero">
   <div class="hero-tag">
     <div class="pulse"></div>
-    Built for Kenyan SMEs
+    The Future Is Local — Digital Ads 🇰🇪
   </div>
-  <h1>You Close Deals.<br>We Run Your <em>Ads.</em></h1>
-  <p class="hero-sub">Kenyan businesses are spending billions on digital ads and the opportunity is massive. The future is local — and this is the era to grow. Are you getting the best out of your Meta ads?</p>
+
+  <h1>Other Businesses<br>Are Winning.<br><em>Are You?</em></h1>
+
+  <p class="hero-sub">
+    <strong>Your competitors are running Meta ads right now.</strong> Some are doing it right. Most aren't. This is your moment to come in, set up properly, and take that space before they figure it out.<br><br>
+    We set up your entire campaign — <strong>you don't lift a finger. Not even once.</strong> You stay focused on your customers and your operations. We handle everything digital.
+  </p>
+
+  <div class="fomo-strip">
+    <div class="fomo-dot"></div>
+    This is your moment to shine. Don't blink.
+  </div>
+
   <div class="hero-actions">
-    <a href="https://whatsapp.com/channel/0029VbAXJQn3WHTOUNUjAf1W" target="_blank" class="btn-primary">
+    <a href="https://chat.whatsapp.com/ICxJ7ujpxwY7VguIvQYix2" target="_blank" class="btn-primary">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-      Join Our WhatsApp Channel
+      Join the Winners — WhatsApp Group
     </a>
     <a href="#offer" class="btn-secondary">See the Offer ↓</a>
   </div>
@@ -516,29 +523,73 @@
   </div>
   <div class="stat reveal">
     <div class="stat-num">60%+</div>
-    <div class="stat-label">Of SME Meta ad budgets wasted on poor targeting</div>
+    <div class="stat-label">Of SME Meta ad budgets wasted — poor targeting, weak creatives</div>
   </div>
   <div class="stat reveal">
     <div class="stat-num">3.2M+</div>
-    <div class="stat-label">Kenyan businesses active on Meta platforms</div>
+    <div class="stat-label">Kenyan businesses active on Meta — most not optimised</div>
   </div>
   <div class="stat reveal">
-    <div class="stat-num">10K</div>
-    <div class="stat-label">One-time setup — all-in, no hidden costs</div>
+    <div class="stat-num">KES 10K</div>
+    <div class="stat-label">All-in setup. No hidden costs. No lifting a finger.</div>
   </div>
 </div>
+
+<!-- WINNERS SECTION -->
+<section class="winner-section">
+  <div class="section-tag">Who's Already Winning</div>
+  <h2>Businesses like yours are <em>already ahead.</em></h2>
+  <div class="winner-grid">
+    <div class="winner-card reveal">
+      <div class="winner-icon">🏥</div>
+      <div class="winner-niche">Clinic — Nairobi</div>
+      <div class="winner-text">Running properly targeted ads reaching patients in their specific area. Bookings are coming in consistently.</div>
+      <div class="winner-result">→ Steady patient flow every week</div>
+    </div>
+    <div class="winner-card reveal">
+      <div class="winner-icon">🏡</div>
+      <div class="winner-niche">Real Estate — Kenya</div>
+      <div class="winner-text">Plot listings reaching serious buyers — not random scrollers. Enquiries from people with actual budget.</div>
+      <div class="winner-result">→ Quality leads, faster closings</div>
+    </div>
+    <div class="winner-card reveal">
+      <div class="winner-icon">🛎️</div>
+      <div class="winner-niche">AirBnB — Nairobi</div>
+      <div class="winner-text">Calendar filling up with bookings from targeted ads reaching travellers and weekend guests directly.</div>
+      <div class="winner-result">→ Higher occupancy, more revenue</div>
+    </div>
+    <div class="winner-card reveal">
+      <div class="winner-icon">👗</div>
+      <div class="winner-niche">Fashion Store — Kenya</div>
+      <div class="winner-text">New customers discovering the brand every day through creatives that actually stop the scroll.</div>
+      <div class="winner-result">→ DMs and orders flowing in</div>
+    </div>
+    <div class="winner-card reveal">
+      <div class="winner-icon">💅🏻</div>
+      <div class="winner-niche">Salon & Beauty — Nairobi</div>
+      <div class="winner-text">Appointment slots filling up. The right audience — people in their area, ready to book — seeing their ads.</div>
+      <div class="winner-result">→ Full bookings every week</div>
+    </div>
+    <div class="winner-card reveal">
+      <div class="winner-icon">📱</div>
+      <div class="winner-niche">Electronics — Kenya</div>
+      <div class="winner-text">Products in front of buyers who are actively searching. Sales coming in without chasing anyone.</div>
+      <div class="winner-result">→ Consistent daily sales</div>
+    </div>
+  </div>
+</section>
 
 <!-- WHO WE SERVE -->
 <section>
   <div class="section-tag">Who We Serve</div>
-  <h2>Growing Kenyan businesses ready to <em>level up.</em></h2>
+  <h2>Your industry. Your market.<br><em>Your moment.</em></h2>
   <div class="niches">
     <div class="niche-pill"><span class="niche-icon">🏥</span> Clinics & Hospitals</div>
     <div class="niche-pill"><span class="niche-icon">🛋️</span> Furniture Stores</div>
     <div class="niche-pill"><span class="niche-icon">👗</span> Clothing & Fashion</div>
     <div class="niche-pill"><span class="niche-icon">🏡</span> Real Estate & Plots</div>
     <div class="niche-pill"><span class="niche-icon">🏠</span> AirBnB & Rentals</div>
-     <div class="niche-pill"><span class="niche-icon">💅🏻✂🧖🏼‍♀️</span> Beauty/Hair Salons</div>
+    <div class="niche-pill"><span class="niche-icon">💅🏻✂️🧖🏼‍♀️</span> Beauty & Hair Salons</div>
     <div class="niche-pill"><span class="niche-icon">📱</span> Electronics</div>
   </div>
 </section>
@@ -546,11 +597,11 @@
 <!-- OFFER -->
 <section class="offer-section" id="offer">
   <div class="section-tag">The Offer</div>
-  <h2>Everything you need.<br><em>One flat price.</em></h2>
+  <h2>Everything done for you.<br><em>One flat price.</em></h2>
   <br><br>
   <div class="offer-card">
     <div class="offer-price">KES 10,000 <span>one-time setup</span></div>
-    <p class="offer-desc">A full professional Meta ads setup built for your business and your market. No templates, no guesswork.</p>
+    <p class="offer-desc">A complete, professional Meta ads setup built specifically for your business. No templates. No guesswork. You don't lift a finger — not even once.</p>
 
     <ul class="offer-list">
       <li><div class="check">✓</div> Scroll-stopping ad creatives designed for your audience</li>
@@ -563,8 +614,8 @@
       🎁 &nbsp; FREE 30-Day Campaign Monitoring & Management
     </div>
 
-    <a href="https://whatsapp.com/channel/0029VbAXJQn3WHTOUNUjAf1W" target="_blank" class="btn-primary">
-      Let's Get Started →
+    <a href="https://chat.whatsapp.com/ICxJ7ujpxwY7VguIvQYix2" target="_blank" class="btn-primary">
+      I'm Ready — Let's Go →
     </a>
   </div>
 </section>
@@ -576,52 +627,63 @@
   <div class="steps">
     <div class="step reveal">
       <div class="step-num">01</div>
-      <div class="step-title">You Reach Out</div>
-      <div class="step-desc">Drop us a message on WhatsApp. Tell us about your business and what you're running currently.</div>
+      <div class="step-title">You Join the Group</div>
+      <div class="step-desc">Request to join our WhatsApp group. Answer 4 quick questions so we understand your business.</div>
     </div>
     <div class="step reveal">
       <div class="step-num">02</div>
       <div class="step-title">We Build Everything</div>
-      <div class="step-desc">Creatives, copy, targeting, campaign structure — fully set up and ready to go live.</div>
+      <div class="step-desc">Creatives, copy, targeting, campaign structure — fully built and ready to launch. You don't touch a thing.</div>
     </div>
     <div class="step reveal">
       <div class="step-num">03</div>
       <div class="step-title">We Launch & Monitor</div>
-      <div class="step-desc">Your campaign goes live. We watch it daily for 30 days — optimizing as we go.</div>
+      <div class="step-desc">Your campaign goes live. We watch it daily for 30 days — optimising as we go.</div>
     </div>
     <div class="step reveal">
       <div class="step-num">04</div>
       <div class="step-title">You Focus on Business</div>
-      <div class="step-desc">Handle your customers, close your deals. The ads are taken care of.</div>
+      <div class="step-desc">Serve your customers. Close your deals. Run your operations. The ads are completely taken care of.</div>
     </div>
   </div>
 </section>
 
-<!-- CTA -->
+<!-- BIG CTA -->
 <section class="cta-section">
-  <div class="section-tag">This Is the Digital Era</div>
-  <h2>Let's grow <em>together. 🚀</em></h2>
-  <p>Join our WhatsApp channel and let's talk about your business today.</p>
-  <a href="https://whatsapp.com/channel/0029VbAXJQn3WHTOUNUjAf1W" target="_blank" class="btn-primary">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-    Join WhatsApp Channel
+  <div class="section-tag">This Is Your Moment</div>
+  <h2>Join the winners.<br><em>We're waiting. 🚀</em></h2>
+
+  <div class="cta-body">
+    Other businesses in this country are already running proper ads and winning customers <strong>every single day.</strong> The future is local — and digital ads are how local businesses shine right now.<br><br>
+    We set up your campaign. We monitor it. We optimise it. <span class="highlight">You don't lift a finger. Not even once.</span><br><br>
+    Join our group now and be a winner like other businesses across Kenya. <strong>We're waiting for you from the other side.</strong>
+  </div>
+
+  <div class="cta-warning">
+    ⚠️Usiseme hukuambiwa.
+  </div>
+
+  <br>
+
+  <a href="https://chat.whatsapp.com/ICxJ7ujpxwY7VguIvQYix2" target="_blank" class="btn-primary" style="font-size:1.1rem; padding: 18px 40px;">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    Join the WhatsApp Group Now
   </a>
 </section>
 
 <!-- FOOTER -->
 <footer>
-  <div class="logo">Ads<span>KE</span></div>
-  <p>© 2026 AdsKE. Built for Kenyan SMEs.</p>
-  <p>🇰🇪 Nairobi, Kenya</p>
+  <div class="logo">AdsPro<span>KE</span> 🇰🇪</div>
+  <p>© 2026 AdsPro KE. Built for Kenyan SMEs.</p>
+  <p>🇰🇪 Kenya</p>
 </footer>
 
-<!-- WhatsApp Float -->
-<a href="https://whatsapp.com/channel/0029VbAXJQn3WHTOUNUjAf1W" target="_blank" class="wa-float" title="Chat on WhatsApp">
+<!-- WA Float -->
+<a href="https://chat.whatsapp.com/ICxJ7ujpxwY7VguIvQYix2" target="_blank" class="wa-float" title="Join WhatsApp Group">
   <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
 </a>
 
 <script>
-  // Reveal on scroll
   const reveals = document.querySelectorAll('.reveal');
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry, i) => {
