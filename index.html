@@ -25,10 +25,7 @@
     overflow-x: hidden;
   }
 
-  /* UNIFIED BACKGROUND (No blocks) */
-  .bg-wrapper {
-    position: fixed; inset: 0; z-index: -1;
-  }
+  .bg-wrapper { position: fixed; inset: 0; z-index: -1; }
   .grid-bg {
     position: absolute; inset: 0;
     background-image: 
@@ -38,7 +35,6 @@
     mask-image: radial-gradient(circle at center, black, transparent 90%);
   }
 
-  /* NAV - Slim & Sticky */
   nav {
     display: flex; justify-content: space-between; align-items: center;
     padding: 12px 5%; position: fixed; top: 0; width: 100%;
@@ -48,27 +44,20 @@
   .logo { font-family: 'Syne', sans-serif; font-weight: 800; color: var(--accent); font-size: 1.2rem; }
   .logo span { color: #fff; }
 
-  /* BUTTONS - Optimized for Thumbs */
   .btn {
     display: inline-flex; align-items: center; justify-content: center; gap: 10px;
     padding: 16px 24px; border-radius: 14px; text-decoration: none;
     font-weight: 700; font-size: 1rem; transition: 0.2s; border: none;
-    width: 100%; /* Mobile full width */
+    width: 100%;
   }
   .btn-primary { 
     background: var(--green); color: #000; 
     box-shadow: 0 10px 25px rgba(0,200,83,0.3);
   }
-  .btn-secondary { 
-    background: rgba(255,255,255,0.05); color: #fff; 
-    border: 1px solid rgba(255,255,255,0.1); 
-  }
 
-  /* LAYOUT - 3 Compact Sections */
   main { padding: 80px 5% 40px; }
   section { margin-bottom: 60px; position: relative; }
 
-  /* SECTION 1: HERO & STATS */
   .hero-tag {
     display: inline-flex; align-items: center; gap: 6px;
     background: rgba(0,200,83,0.1); color: var(--green);
@@ -82,9 +71,7 @@
   h1 em { font-style: normal; color: var(--accent); }
   .hero-sub { color: var(--muted); font-size: 0.95rem; margin-bottom: 25px; }
 
-  .stats-grid {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px;
-  }
+  .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
   .stat-card {
     background: rgba(255,255,255,0.03); padding: 15px; border-radius: 15px;
     border: 1px solid rgba(0,200,83,0.1);
@@ -92,26 +79,27 @@
   .stat-num { display: block; font-family: 'Syne', sans-serif; font-size: 1.4rem; color: var(--accent); font-weight: 800; }
   .stat-label { font-size: 0.7rem; color: var(--muted); line-height: 1.2; margin-top: 4px; }
 
-  /* SECTION 2: PROOF (Horizontal Scroll for winners) */
   .section-header { margin-bottom: 20px; }
   .section-tag { color: var(--green); font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; }
   
+  /* UPDATED: SCROLLABLE GALLERY */
   .winner-scroll {
-    display: flex; gap: 15px; overflow-x: auto; padding-bottom: 15px;
-    scrollbar-width: none; /* Hide scrollbar Firefox */
+    display: flex; gap: 15px; overflow-x: auto; padding-bottom: 20px;
+    scrollbar-width: none;
+    scroll-snap-type: x mandatory;
   }
-  .winner-scroll::-webkit-scrollbar { display: none; } /* Hide scrollbar Chrome/Safari */
+  .winner-scroll::-webkit-scrollbar { display: none; }
 
   .winner-card {
-    min-width: 260px; background: rgba(255,255,255,0.03); 
-    padding: 20px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05);
+    min-width: 280px; background: rgba(255,255,255,0.03); 
+    padding: 25px; border-radius: 24px; border: 1px solid rgba(255,255,255,0.05);
+    scroll-snap-align: center;
   }
-  .winner-icon { font-size: 1.5rem; margin-bottom: 10px; display: block; }
-  .winner-niche { color: var(--green); font-size: 0.65rem; font-weight: 700; text-transform: uppercase; margin-bottom: 5px; }
-  .winner-text { font-size: 0.85rem; color: var(--muted); line-height: 1.4; }
-  .winner-result { font-size: 0.85rem; font-weight: 700; margin-top: 10px; color: #fff; }
+  .winner-icon { font-size: 2rem; margin-bottom: 12px; display: block; }
+  .winner-niche { color: var(--green); font-size: 0.7rem; font-weight: 700; text-transform: uppercase; margin-bottom: 8px; }
+  .winner-text { font-size: 0.9rem; color: var(--muted); line-height: 1.4; }
+  .winner-result { font-size: 0.85rem; font-weight: 700; margin-top: 15px; color: #fff; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 10px; }
 
-  /* SECTION 3: OFFER & ACTION */
   .offer-card {
     background: linear-gradient(180deg, rgba(0,200,83,0.15) 0%, rgba(10,10,10,0) 100%);
     border: 1px solid rgba(0,200,83,0.3); border-radius: 25px;
@@ -123,11 +111,6 @@
   .offer-list { text-align: left; list-style: none; margin: 25px 0; }
   .offer-list li { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; font-size: 0.9rem; }
   .check { color: var(--green); font-weight: 900; }
-
-  /* FLOATING CTA */
-  .sticky-cta {
-    position: fixed; bottom: 20px; left: 5%; right: 5%; z-index: 100;
-  }
 
   @media (min-width: 768px) {
     main { max-width: 600px; margin: 0 auto; }
@@ -146,67 +129,87 @@
 <main>
   <section id="hero">
     <div class="hero-tag">● Digital Ads Kenya 🇰🇪</div>
-    <h1>Other Businesses Are Winning. <em>Are You?</em></h1>
+    <h1>Stop Guessing. <em>Start Selling.</em></h1>
     <p class="hero-sub">
-      Your competitors are running Meta ads right now. We set up your entire campaign — <strong>you don't lift a finger.</strong> Focus on your customers; we handle the digital.
+      We build, target, and launch your Meta Ads. You just handle the inquiries. Simple.
     </p>
     
     <div class="stats-grid">
       <div class="stat-card">
-        <span class="stat-num">47B+</span>
-        <div class="stat-label">KES spent on ads by Kenyan SMEs</div>
+        <span class="stat-num">95%</span>
+        <div class="stat-label">Of Kenyans access FB/IG via Mobile</div>
       </div>
       <div class="stat-card">
-        <span class="stat-num">60%+</span>
-        <div class="stat-label">Ad budgets wasted on poor targeting</div>
+        <span class="stat-num">100%</span>
+        <div class="stat-label">Hands-free management for you</div>
       </div>
     </div>
   </section>
 
   <section id="proof">
     <div class="section-header">
-      <div class="section-tag">Already Winning</div>
-      <h2 style="font-family: 'Syne'; font-size: 1.8rem;">Your Industry. <em>Ahead.</em></h2>
+      <div class="section-tag">Winning Industries</div>
+      <h2 style="font-family: 'Syne'; font-size: 1.8rem;">Every Niche. <em>Every Result.</em></h2>
+      <p style="font-size: 0.8rem; color: var(--muted); margin-top: 5px;">Swipe to see how we win ➔</p>
     </div>
     
     <div class="winner-scroll">
       <div class="winner-card">
-        <span class="winner-icon">🏥</span>
-        <div class="winner-niche">Clinic — Nairobi</div>
-        <p class="winner-text">Properly targeted ads reaching local patients. Bookings coming in daily.</p>
-        <div class="winner-result">Steady weekly flow</div>
+        <span class="winner-icon">🪑</span>
+        <div class="winner-niche">Furniture & Decor</div>
+        <p class="winner-text">Moving sofa sets and dining tables by targeting homeowners and new movers.</p>
+        <div class="winner-result">Showroom visits +150%</div>
       </div>
+
+      <div class="winner-card">
+        <span class="winner-icon">📱</span>
+        <div class="winner-niche">Electronics & Gadgets</div>
+        <p class="winner-text">Smartphones and laptops sold to tech-enthusiasts with high-intent targeting.</p>
+        <div class="winner-result">Consistent daily sales</div>
+      </div>
+
+      <div class="winner-card">
+        <span class="winner-icon">🏫</span>
+        <div class="winner-niche">Schools & Kindergartens</div>
+        <p class="winner-text">Getting admissions up by reaching parents in specific Nairobi neighborhoods.</p>
+        <div class="winner-result">Increased Intake 2026</div>
+      </div>
+
+      <div class="winner-card">
+        <span class="winner-icon">🎓</span>
+        <div class="winner-niche">Online Courses</div>
+        <p class="winner-text">Selling digital expertise with automated ads that run while you sleep.</p>
+        <div class="winner-result">Scalable passive income</div>
+      </div>
+
+      <div class="winner-card">
+        <span class="winner-icon">🧖‍♀️</span>
+        <div class="winner-niche">Beauty, Spa & Massage</div>
+        <p class="winner-text">Filling up the appointment book with local "near me" traffic and offers.</p>
+        <div class="winner-result">Fully booked weekends</div>
+      </div>
+
       <div class="winner-card">
         <span class="winner-icon">🏡</span>
-        <div class="winner-niche">Real Estate</div>
-        <p class="winner-text">Plot listings reaching serious buyers, not random scrollers.</p>
-        <div class="winner-result">Quality high-budget leads</div>
-      </div>
-      <div class="winner-card">
-        <span class="winner-icon">👗</span>
-        <div class="winner-niche">Fashion Store</div>
-        <p class="winner-text">New customers discovering the brand via scroll-stopping creatives.</p>
-        <div class="winner-result">DMs & orders daily</div>
+        <div class="winner-niche">Real Estate & Plots</div>
+        <p class="winner-text">Connecting developers with serious land buyers and house hunters.</p>
+        <div class="winner-result">High-ticket lead gen</div>
       </div>
     </div>
   </section>
 
   <section id="offer">
     <div class="offer-card">
-      <div class="section-tag">The Deal</div>
+      <div class="section-tag">Flat Rate</div>
       <div class="price">10K <span>KES / Setup</span></div>
       
       <ul class="offer-list">
-        <li><span class="check">✓</span> Complete Campaign Setup</li>
-        <li><span class="check">✓</span> High-Converting Ad Creatives</li>
-        <li><span class="check">✓</span> Precision Local Targeting</li>
-        <li><span class="check">✓</span> We do it all for you</li>
+        <li><span class="check">✓</span> Strategic Campaign Setup</li>
+        <li><span class="check">✓</span> Ad Creative Design</li>
+        <li><span class="check">✓</span> Precise Location Targeting</li>
+        <li><span class="check">✓</span> Professional Ad Copy</li>
       </ul>
       
-      <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 20px;">
-        Join 50+ Kenyan business owners in our WhatsApp group for strategy and setup.
-      </p>
-
       <a href="https://chat.whatsapp.com/ICxJ7ujpxwY7VguIvQYix2" class="btn btn-primary">
         JOIN THE WHATSAPP GROUP
       </a>
@@ -214,8 +217,8 @@
   </section>
 </main>
 
-<div style="text-align: center; padding-bottom: 100px; color: #444; font-size: 0.7rem;">
-  © 2026 AdsPro KE. Built for Kenyan SMEs.
+<div style="text-align: center; padding-bottom: 50px; color: #444; font-size: 0.7rem;">
+  © 2026 AdsPro KE. Dedicated to Kenyan Growth.
 </div>
 
 </body>
