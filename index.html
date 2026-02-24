@@ -2,380 +2,221 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" href="adsproke-logo.png" type="image/png">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>AdsPro KE — Meta Ads for Kenyan SMEs</title>
+<link rel="icon" href="adsproke-logo.png" type="image/png">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
     --green: #00C853;
     --dark: #0A0A0A;
-    --card: rgba(17, 17, 17, 0.6);
     --text: #E8E8E8;
     --muted: #888;
     --accent: #00FF6A;
   }
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
-
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  
   body {
     background: var(--dark);
     color: var(--text);
     font-family: 'DM Sans', sans-serif;
+    line-height: 1.5;
     overflow-x: hidden;
-    cursor: none;
   }
 
-  /* CUSTOM CURSOR */
-  .cursor {
-    position: fixed; width: 12px; height: 12px;
-    background: var(--accent); border-radius: 50%;
-    pointer-events: none; z-index: 9999;
-    transform: translate(-50%, -50%);
-    transition: transform 0.1s, width 0.2s, height 0.2s, opacity 0.2s;
-    mix-blend-mode: difference;
-  }
-  .cursor-ring {
-    position: fixed; width: 40px; height: 40px;
-    border: 1.5px solid rgba(0,255,106,0.5); border-radius: 50%;
-    pointer-events: none; z-index: 9998;
-    transform: translate(-50%, -50%);
-    transition: all 0.12s ease; mix-blend-mode: difference;
-  }
-  body:hover .cursor { opacity: 1; }
-
-  /* NOISE & GRID (Unified seamless background) */
-  body::before {
-    content: ''; position: fixed; inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
-    pointer-events: none; z-index: 998;
+  /* UNIFIED BACKGROUND (No blocks) */
+  .bg-wrapper {
+    position: fixed; inset: 0; z-index: -1;
   }
   .grid-bg {
-    position: fixed; inset: 0;
-    background-image: linear-gradient(rgba(0,200,83,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,200,83,0.03) 1px, transparent 1px);
-    background-size: 60px 60px;
-    animation: gridShift 20s linear infinite; pointer-events: none; z-index: 0;
+    position: absolute; inset: 0;
+    background-image: 
+      linear-gradient(rgba(0,200,83,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,200,83,0.05) 1px, transparent 1px);
+    background-size: 40px 40px;
+    mask-image: radial-gradient(circle at center, black, transparent 90%);
   }
-  @keyframes gridShift { 0% { transform: translateY(0); } 100% { transform: translateY(60px); } }
 
-  /* NAV */
+  /* NAV - Slim & Sticky */
   nav {
     display: flex; justify-content: space-between; align-items: center;
-    padding: 20px 5%; position: fixed; top: 0; left: 0; right: 0;
-    background: rgba(10,10,10,0.6); backdrop-filter: blur(20px);
-    z-index: 100; border-bottom: 1px solid rgba(0,200,83,0.1);
-    animation: navSlide 0.8s ease forwards;
+    padding: 12px 5%; position: fixed; top: 0; width: 100%;
+    background: rgba(10,10,10,0.8); backdrop-filter: blur(15px);
+    z-index: 1000; border-bottom: 1px solid rgba(0,200,83,0.1);
   }
-  @keyframes navSlide { from { transform: translateY(-100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-  .logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.4rem; color: var(--accent); letter-spacing: -1px; }
-  .logo span { color: var(--text); }
-  .nav-cta {
-    background: var(--green); color: #000; font-weight: 700; font-size: 0.85rem;
-    padding: 10px 22px; border-radius: 100px; text-decoration: none;
-    transition: transform 0.2s; box-shadow: 0 0 15px rgba(0,200,83,0.3);
-  }
-  .nav-cta:hover { transform: scale(1.05); }
+  .logo { font-family: 'Syne', sans-serif; font-weight: 800; color: var(--accent); font-size: 1.2rem; }
+  .logo span { color: #fff; }
 
-  /* GLOBAL LAYOUT: 3 COMPACT SECTIONS */
-  main {
-    position: relative; z-index: 1;
-    max-width: 1400px; margin: 0 auto;
-    padding: 100px 5% 40px;
-    display: flex; flex-direction: column; gap: 60px;
+  /* BUTTONS - Optimized for Thumbs */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+    padding: 16px 24px; border-radius: 14px; text-decoration: none;
+    font-weight: 700; font-size: 1rem; transition: 0.2s; border: none;
+    width: 100%; /* Mobile full width */
+  }
+  .btn-primary { 
+    background: var(--green); color: #000; 
+    box-shadow: 0 10px 25px rgba(0,200,83,0.3);
+  }
+  .btn-secondary { 
+    background: rgba(255,255,255,0.05); color: #fff; 
+    border: 1px solid rgba(255,255,255,0.1); 
   }
 
-  section { position: relative; }
+  /* LAYOUT - 3 Compact Sections */
+  main { padding: 80px 5% 40px; }
+  section { margin-bottom: 60px; position: relative; }
 
-  /* TYPOGRAPHY & TAGS */
-  h1 {
-    font-family: 'Syne', sans-serif; font-size: clamp(3rem, 6vw, 5.5rem);
-    font-weight: 800; line-height: 1.0; letter-spacing: -3px;
-    opacity: 0; animation: fadeUp 0.9s 0.5s ease forwards;
+  /* SECTION 1: HERO & STATS */
+  .hero-tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(0,200,83,0.1); color: var(--green);
+    padding: 6px 12px; border-radius: 100px; font-size: 0.7rem;
+    font-weight: 700; text-transform: uppercase; margin-bottom: 15px;
   }
-  h1 em { font-style: normal; color: transparent; -webkit-text-stroke: 2px var(--accent); animation: glitch 4s infinite; }
-  h2 { font-family: 'Syne', sans-serif; font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; letter-spacing: -1px; line-height: 1.05; margin-bottom: 20px; }
-  h2 em { font-style: normal; color: var(--accent); }
-  
-  .section-tag {
-    font-size: 0.72rem; font-weight: 700; letter-spacing: 4px; text-transform: uppercase;
-    color: var(--green); margin-bottom: 16px; display: flex; align-items: center; gap: 10px;
+  h1 { 
+    font-family: 'Syne', sans-serif; font-size: 2.8rem; 
+    line-height: 1; letter-spacing: -2px; margin-bottom: 15px; 
   }
-  .section-tag::before { content: ''; display: block; width: 24px; height: 1px; background: var(--green); }
+  h1 em { font-style: normal; color: var(--accent); }
+  .hero-sub { color: var(--muted); font-size: 0.95rem; margin-bottom: 25px; }
 
-  /* --- SECTION 1: HERO & STATS (Unified) --- */
-  .hero-container {
-    display: grid; grid-template-columns: 1.2fr 1fr; gap: 40px; align-items: center;
-    min-height: 70vh;
-  }
-  .hero-sub {
-    font-size: clamp(0.95rem, 1.2vw, 1.1rem); color: var(--muted); max-width: 520px;
-    margin-top: 20px; line-height: 1.8; opacity: 0; animation: fadeUp 0.9s 0.7s ease forwards;
-  }
-  .hero-sub strong { color: var(--text); }
-  
-  .hero-actions { display: flex; gap: 16px; margin-top: 30px; opacity: 0; animation: fadeUp 0.9s 0.9s ease forwards; }
-  
-  /* Compact Stats Grid */
   .stats-grid {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 15px;
-    opacity: 0; animation: fadeUp 1s 1s ease forwards;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px;
   }
   .stat-card {
-    background: rgba(0,200,83,0.03); border: 1px solid rgba(0,200,83,0.1);
-    padding: 24px; border-radius: 20px; backdrop-filter: blur(10px);
-    transition: transform 0.3s, background 0.3s;
+    background: rgba(255,255,255,0.03); padding: 15px; border-radius: 15px;
+    border: 1px solid rgba(0,200,83,0.1);
   }
-  .stat-card:hover { transform: translateY(-5px); background: rgba(0,200,83,0.06); }
-  .stat-num { font-family: 'Syne', sans-serif; font-size: 2.2rem; font-weight: 800; color: var(--accent); line-height: 1; }
-  .stat-label { font-size: 0.8rem; color: var(--muted); margin-top: 8px; line-height: 1.4; }
+  .stat-num { display: block; font-family: 'Syne', sans-serif; font-size: 1.4rem; color: var(--accent); font-weight: 800; }
+  .stat-label { font-size: 0.7rem; color: var(--muted); line-height: 1.2; margin-top: 4px; }
 
-  /* --- SECTION 2: PROOF & NICHES (Side-by-Side) --- */
-  .proof-container {
-    display: grid; grid-template-columns: 1fr 350px; gap: 40px;
-    background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05);
-    border-radius: 30px; padding: 50px; backdrop-filter: blur(10px);
-  }
+  /* SECTION 2: PROOF (Horizontal Scroll for winners) */
+  .section-header { margin-bottom: 20px; }
+  .section-tag { color: var(--green); font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; }
   
-  /* Compact Winner Grid */
-  .winner-grid {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px;
+  .winner-scroll {
+    display: flex; gap: 15px; overflow-x: auto; padding-bottom: 15px;
+    scrollbar-width: none; /* Hide scrollbar Firefox */
   }
+  .winner-scroll::-webkit-scrollbar { display: none; } /* Hide scrollbar Chrome/Safari */
+
   .winner-card {
-    background: rgba(10,10,10,0.8); border: 1px solid rgba(0,200,83,0.1);
-    padding: 20px; border-radius: 16px; transition: border-color 0.3s;
+    min-width: 260px; background: rgba(255,255,255,0.03); 
+    padding: 20px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05);
   }
-  .winner-card:hover { border-color: var(--accent); }
   .winner-icon { font-size: 1.5rem; margin-bottom: 10px; display: block; }
-  .winner-niche { font-size: 0.65rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); margin-bottom: 8px; }
-  .winner-text { font-size: 0.8rem; color: var(--muted); line-height: 1.6; }
-  .winner-result { font-size: 0.85rem; font-weight: 700; color: var(--text); margin-top: 12px; display: flex; align-items: center; gap: 8px; }
-  .winner-result::before { content: ''; width: 10px; height: 1px; background: var(--accent); }
+  .winner-niche { color: var(--green); font-size: 0.65rem; font-weight: 700; text-transform: uppercase; margin-bottom: 5px; }
+  .winner-text { font-size: 0.85rem; color: var(--muted); line-height: 1.4; }
+  .winner-result { font-size: 0.85rem; font-weight: 700; margin-top: 10px; color: #fff; }
 
-  /* Compact Niches */
-  .niches { display: flex; flex-direction: column; gap: 10px; }
-  .niche-pill {
-    display: flex; align-items: center; gap: 12px;
-    background: rgba(0,200,83,0.05); border: 1px solid rgba(0,200,83,0.1);
-    padding: 12px 20px; border-radius: 12px; font-size: 0.85rem; font-weight: 500;
-    transition: all 0.3s ease;
+  /* SECTION 3: OFFER & ACTION */
+  .offer-card {
+    background: linear-gradient(180deg, rgba(0,200,83,0.15) 0%, rgba(10,10,10,0) 100%);
+    border: 1px solid rgba(0,200,83,0.3); border-radius: 25px;
+    padding: 30px 20px; text-align: center;
   }
-  .niche-pill:hover { border-color: var(--green); transform: translateX(5px); background: rgba(0,200,83,0.1); }
-
-  /* --- SECTION 3: THE OFFER & CTA (Combined focal point) --- */
-  .action-container {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center;
-    background: linear-gradient(135deg, rgba(0,200,83,0.08), rgba(0,0,0,0.5));
-    border: 1px solid rgba(0,200,83,0.3); border-radius: 30px; padding: 60px;
-    position: relative; overflow: hidden;
-  }
-  .action-container::before {
-    content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
-    background: radial-gradient(circle, rgba(0,200,83,0.1), transparent 60%);
-    animation: rotateConic 10s linear infinite; pointer-events: none;
-  }
+  .price { font-family: 'Syne', sans-serif; font-size: 3.5rem; color: var(--accent); line-height: 1; }
+  .price span { font-size: 0.9rem; color: var(--muted); font-family: 'DM Sans'; }
   
-  .offer-price { font-family: 'Syne', sans-serif; font-size: 4rem; font-weight: 800; color: var(--accent); line-height: 1; }
-  .offer-price span { font-size: 1rem; color: var(--muted); font-family: 'DM Sans', sans-serif; font-weight: 400; }
-  
-  .offer-list { list-style: none; display: flex; flex-direction: column; gap: 14px; margin: 25px 0; position: relative; z-index: 1; }
-  .offer-list li { display: flex; align-items: center; gap: 12px; font-size: 0.95rem; }
-  .check {
-    width: 20px; height: 20px; background: rgba(0,200,83,0.15); border-radius: 50%;
-    display: flex; align-items: center; justify-content: center; color: var(--green);
-    font-size: 0.6rem; font-weight: 700; border: 1px solid rgba(0,200,83,0.3);
+  .offer-list { text-align: left; list-style: none; margin: 25px 0; }
+  .offer-list li { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; font-size: 0.9rem; }
+  .check { color: var(--green); font-weight: 900; }
+
+  /* FLOATING CTA */
+  .sticky-cta {
+    position: fixed; bottom: 20px; left: 5%; right: 5%; z-index: 100;
   }
 
-  .cta-box { text-align: center; position: relative; z-index: 1; }
-  
-  /* BUTTONS */
-  .btn-primary, .btn-big {
-    display: inline-flex; align-items: center; justify-content: center; gap: 10px;
-    background: var(--green); color: #000; font-weight: 800; text-decoration: none;
-    border-radius: 100px; position: relative; overflow: hidden;
-    transition: transform 0.2s, box-shadow 0.3s;
-  }
-  .btn-primary { font-size: 0.95rem; padding: 14px 28px; box-shadow: 0 0 30px rgba(0,200,83,0.3); }
-  .btn-big { font-size: 1.1rem; padding: 20px 40px; width: 100%; box-shadow: 0 0 50px rgba(0,200,83,0.4); animation: btnFloat 3s infinite ease-in-out; }
-  .btn-primary:hover, .btn-big:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 0 60px rgba(0,200,83,0.6); animation: none; }
-  
-  .btn-secondary {
-    display: inline-flex; align-items: center; gap: 8px; color: var(--text);
-    font-weight: 500; font-size: 0.95rem; padding: 14px 28px; border-radius: 100px;
-    text-decoration: none; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px);
-    transition: border-color 0.3s, background 0.3s;
-  }
-  .btn-secondary:hover { border-color: var(--green); background: rgba(0,200,83,0.05); }
-
-  /* WA FLOAT */
-  .wa-float {
-    position: fixed; bottom: 28px; right: 28px; width: 60px; height: 60px;
-    background: #25D366; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-    text-decoration: none; z-index: 200; box-shadow: 0 0 20px rgba(37,211,102,0.4);
-    transition: transform 0.2s;
-  }
-  .wa-float:hover { transform: scale(1.1) rotate(-10deg); }
-  .wa-float svg { width: 30px; height: 30px; fill: white; }
-
-  /* ANIMATIONS */
-  @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-  @keyframes glitch {
-    0%, 90%, 100% { -webkit-text-stroke-color: var(--accent); text-shadow: none; }
-    92% { text-shadow: -3px 0 #FF0040; -webkit-text-stroke-color: var(--accent); }
-    94% { text-shadow: 3px 0 #00FFFF; -webkit-text-stroke-color: var(--accent); }
-  }
-  @keyframes rotateConic { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-  @keyframes btnFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
-
-  /* MOBILE RESPONSIVENESS */
-  @media (max-width: 968px) {
-    .hero-container, .proof-container, .action-container { grid-template-columns: 1fr; padding: 30px; }
-    main { gap: 40px; padding-top: 100px; }
-    h1 { text-align: center; }
-    .hero-sub { text-align: center; margin: 20px auto; }
-    .hero-actions { justify-content: center; }
-    body { cursor: auto; }
-    .cursor, .cursor-ring { display: none; }
+  @media (min-width: 768px) {
+    main { max-width: 600px; margin: 0 auto; }
   }
 </style>
 </head>
 <body>
 
-<div class="cursor" id="cursor"></div>
-<div class="cursor-ring" id="cursorRing"></div>
-
-<div class="grid-bg"></div>
+<div class="bg-wrapper"><div class="grid-bg"></div></div>
 
 <nav>
-  <div class="logo">AdsPro<span>KE</span> 🇰🇪</div>
-  <a href="https://chat.whatsapp.com/ICxJ7ujpxwY7VguIvQYix2" target="_blank" class="nav-cta">Join the Group →</a>
+  <div class="logo">AdsPro<span>KE</span></div>
+  <a href="https://chat.whatsapp.com/ICxJ7ujpxwY7VguIvQYix2" style="color: var(--green); font-weight: 700; font-size: 0.8rem; text-decoration: none;">JOIN GROUP →</a>
 </nav>
 
 <main>
-  <section id="hero" class="hero-container">
-    <div class="hero-content">
-      <div class="section-tag">The Future Is Local — Digital Ads 🇰🇪</div>
-      <h1>Other Businesses<br>Are Winning.<br><em>Are You?</em></h1>
-      <p class="hero-sub">
-        <strong>Your competitors are running Meta ads right now.</strong> Some are doing it right. Most aren't. This is your moment to come in, set up properly, and take that space before they figure it out.<br><br>
-        We set up your entire campaign — <strong>you don't lift a finger. Not even once.</strong> You stay focused on your customers and your operations. We handle everything digital.
-      </p>
-      <div class="hero-actions">
-        <a href="https://chat.whatsapp.com/ICxJ7ujpxwY7VguIvQYix2" target="_blank" class="btn-primary">Join WhatsApp Group</a>
-        <a href="#offer" class="btn-secondary">See Offer ↓</a>
-      </div>
-    </div>
+  <section id="hero">
+    <div class="hero-tag">● Digital Ads Kenya 🇰🇪</div>
+    <h1>Other Businesses Are Winning. <em>Are You?</em></h1>
+    <p class="hero-sub">
+      Your competitors are running Meta ads right now. We set up your entire campaign — <strong>you don't lift a finger.</strong> Focus on your customers; we handle the digital.
+    </p>
     
     <div class="stats-grid">
       <div class="stat-card">
         <span class="stat-num">47B+</span>
-        <div class="stat-label">KES spent on digital ads by Kenyan businesses annually</div>
+        <div class="stat-label">KES spent on ads by Kenyan SMEs</div>
       </div>
       <div class="stat-card">
         <span class="stat-num">60%+</span>
-        <div class="stat-label">Of SME Meta ad budgets wasted (poor targeting)</div>
-      </div>
-      <div class="stat-card">
-        <span class="stat-num">3.2M+</span>
-        <div class="stat-label">Kenyan businesses active on Meta — most not optimised</div>
-      </div>
-      <div class="stat-card">
-        <span class="stat-num">KES 10K</span>
-        <div class="stat-label">All-in setup. No hidden costs. You don't lift a finger.</div>
+        <div class="stat-label">Ad budgets wasted on poor targeting</div>
       </div>
     </div>
   </section>
 
-  <section id="proof" class="proof-container">
-    <div>
-      <div class="section-tag">Who's Already Winning</div>
-      <h2>Businesses like yours are <em>already ahead.</em></h2>
-      <div class="winner-grid">
-        <div class="winner-card">
-          <span class="winner-icon">🏥</span>
-          <div class="winner-niche">Clinic — Nairobi</div>
-          <div class="winner-text">Running properly targeted ads reaching patients in their area. Bookings coming in.</div>
-          <div class="winner-result">Steady patient flow</div>
-        </div>
-        <div class="winner-card">
-          <span class="winner-icon">🏡</span>
-          <div class="winner-niche">Real Estate — Kenya</div>
-          <div class="winner-text">Plot listings reaching serious buyers — not random scrollers.</div>
-          <div class="winner-result">Quality leads, faster closings</div>
-        </div>
-        <div class="winner-card">
-          <span class="winner-icon">👗</span>
-          <div class="winner-niche">Fashion — Kenya</div>
-          <div class="winner-text">New customers discovering the brand through creatives that stop the scroll.</div>
-          <div class="winner-result">DMs and orders flowing in</div>
-        </div>
-        <div class="winner-card">
-          <span class="winner-icon">💅🏻</span>
-          <div class="winner-niche">Salon — Nairobi</div>
-          <div class="winner-text">Appointment slots filling up. The right audience seeing their ads.</div>
-          <div class="winner-result">Full bookings every week</div>
-        </div>
-      </div>
+  <section id="proof">
+    <div class="section-header">
+      <div class="section-tag">Already Winning</div>
+      <h2 style="font-family: 'Syne'; font-size: 1.8rem;">Your Industry. <em>Ahead.</em></h2>
     </div>
     
-    <div>
-      <div class="section-tag">Who We Serve</div>
-      <div class="niches">
-        <div class="niche-pill"><span class="niche-icon">🏥</span> Clinics & Hospitals</div>
-        <div class="niche-pill"><span class="niche-icon">🛋️</span> Furniture Stores</div>
-        <div class="niche-pill"><span class="niche-icon">👗</span> Clothing & Fashion</div>
-        <div class="niche-pill"><span class="niche-icon">🏡</span> Real Estate & Plots</div>
-        <div class="niche-pill"><span class="niche-icon">🏠</span> AirBnB & Rentals</div>
-        <div class="niche-pill"><span class="niche-icon">💅🏻</span> Beauty & Hair Salons</div>
-        <div class="niche-pill"><span class="niche-icon">📱</span> Electronics</div>
+    <div class="winner-scroll">
+      <div class="winner-card">
+        <span class="winner-icon">🏥</span>
+        <div class="winner-niche">Clinic — Nairobi</div>
+        <p class="winner-text">Properly targeted ads reaching local patients. Bookings coming in daily.</p>
+        <div class="winner-result">Steady weekly flow</div>
+      </div>
+      <div class="winner-card">
+        <span class="winner-icon">🏡</span>
+        <div class="winner-niche">Real Estate</div>
+        <p class="winner-text">Plot listings reaching serious buyers, not random scrollers.</p>
+        <div class="winner-result">Quality high-budget leads</div>
+      </div>
+      <div class="winner-card">
+        <span class="winner-icon">👗</span>
+        <div class="winner-niche">Fashion Store</div>
+        <p class="winner-text">New customers discovering the brand via scroll-stopping creatives.</p>
+        <div class="winner-result">DMs & orders daily</div>
       </div>
     </div>
   </section>
 
-  <section id="offer" class="action-container">
-    <div>
-      <div class="section-tag">Your Moment</div>
-      <h2>Stop losing customers to <em>inferior competitors.</em></h2>
-      <div class="offer-price">KES 10K <span>/ All-in Setup</span></div>
+  <section id="offer">
+    <div class="offer-card">
+      <div class="section-tag">The Deal</div>
+      <div class="price">10K <span>KES / Setup</span></div>
       
       <ul class="offer-list">
-        <li><div class="check">✓</div> Complete Meta Campaign Setup</li>
-        <li><div class="check">✓</div> High-Converting Ad Creatives</li>
-        <li><div class="check">✓</div> Precision Audience Targeting</li>
-        <li><div class="check">✓</div> Zero Effort Required From You</li>
+        <li><span class="check">✓</span> Complete Campaign Setup</li>
+        <li><span class="check">✓</span> High-Converting Ad Creatives</li>
+        <li><span class="check">✓</span> Precision Local Targeting</li>
+        <li><span class="check">✓</span> We do it all for you</li>
       </ul>
-    </div>
-    
-    <div class="cta-box">
-      <p style="color: var(--muted); margin-bottom: 20px; font-size: 1.1rem;">
-        Join our exclusive group of winning Kenyan businesses taking over their local markets right now.
+      
+      <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 20px;">
+        Join 50+ Kenyan business owners in our WhatsApp group for strategy and setup.
       </p>
-      <a href="https://chat.whatsapp.com/ICxJ7ujpxwY7VguIvQYix2" target="_blank" class="btn-big">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-        Claim Your Spot — Join Now
+
+      <a href="https://chat.whatsapp.com/ICxJ7ujpxwY7VguIvQYix2" class="btn btn-primary">
+        JOIN THE WHATSAPP GROUP
       </a>
     </div>
   </section>
 </main>
 
-<a href="https://chat.whatsapp.com/ICxJ7ujpxwY7VguIvQYix2" target="_blank" class="wa-float">
-  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-</a>
+<div style="text-align: center; padding-bottom: 100px; color: #444; font-size: 0.7rem;">
+  © 2026 AdsPro KE. Built for Kenyan SMEs.
+</div>
 
-<script>
-  // Cursor logic
-  const cursor = document.getElementById('cursor');
-  const cursorRing = document.getElementById('cursorRing');
-  
-  document.addEventListener('mousemove', (e) => {
-    cursor.style.left = e.clientX + 'px';
-    cursor.style.top = e.clientY + 'px';
-    
-    setTimeout(() => {
-      cursorRing.style.left = e.clientX + 'px';
-      cursorRing.style.top = e.clientY + 'px';
-    }, 50);
-  });
-</script>
 </body>
 </html>
