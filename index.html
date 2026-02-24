@@ -2,1375 +2,343 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AdsPro KE — Meta Ads for Kenyan SMEs</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>AdsPro KE</title>
+<link rel="icon" href="adsproke-logo.png" type="image/png">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --green: #00C853;
-    --dark: #0A0A0A;
-    --card: #111111;
-    --text: #E8E8E8;
-    --muted: #888;
-    --accent: #00FF6A;
-  }
+  :root { --green:#00C853; --dark:#0A0A0A; --text:#E8E8E8; --muted:#888; --accent:#00FF6A; }
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  body { background:var(--dark); color:var(--text); font-family:'DM Sans',sans-serif; line-height:1.5; overflow-x:hidden; }
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  html { scroll-behavior: smooth; }
-
-  body {
-    background: var(--dark);
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    overflow-x: hidden;
-  }
-
-  /* CUSTOM CURSOR */
-  .cursor {
-    position: fixed;
-    width: 12px; height: 12px;
-    background: var(--accent);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 9999;
-    transform: translate(-50%, -50%);
-    transition: transform 0.1s, width 0.2s, height 0.2s, opacity 0.2s;
-    mix-blend-mode: difference;
-  }
-
-  .cursor-ring {
-    position: fixed;
-    width: 40px; height: 40px;
-    border: 1.5px solid rgba(0,255,106,0.5);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 9998;
-    transform: translate(-50%, -50%);
-    transition: all 0.12s ease;
-    mix-blend-mode: difference;
-  }
-
-  body:hover .cursor { opacity: 1; }
-
-  /* NOISE */
-  body::before {
-    content: '';
-    position: fixed; inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 998;
-  }
-
-  /* ANIMATED GRID BACKGROUND */
+  /* BACKGROUND */
+  .bg-wrapper { position:fixed; inset:0; z-index:-1; }
   .grid-bg {
-    position: fixed; inset: 0;
-    background-image:
-      linear-gradient(rgba(0,200,83,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,200,83,0.03) 1px, transparent 1px);
-    background-size: 60px 60px;
-    animation: gridShift 20s linear infinite;
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  @keyframes gridShift {
-    0% { transform: translateY(0); }
-    100% { transform: translateY(60px); }
+    position:absolute; inset:0;
+    background-image: linear-gradient(rgba(0,200,83,.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,200,83,.05) 1px, transparent 1px);
+    background-size:40px 40px;
+    mask-image:radial-gradient(circle at center, black, transparent 90%);
   }
 
   /* NAV */
   nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 5%;
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    background: rgba(10,10,10,0.8);
-    backdrop-filter: blur(20px);
-    z-index: 100;
-    border-bottom: 1px solid rgba(0,200,83,0.1);
-    animation: navSlide 0.8s ease forwards;
+    display:flex; justify-content:space-between; align-items:center;
+    padding:12px 5%; position:fixed; top:0; width:100%;
+    background:rgba(10,10,10,.9); backdrop-filter:blur(15px);
+    z-index:1000; border-bottom:1px solid rgba(0,200,83,.1);
   }
+  .logo { font-family:'Syne',sans-serif; font-weight:800; color:var(--accent); font-size:1.2rem; }
+  .logo span { color:#fff; }
+  .nav-link { color:var(--green); font-weight:700; font-size:.8rem; text-decoration:none; }
 
-  @keyframes navSlide {
-    from { transform: translateY(-100%); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
+  /* BUTTONS */
+  .btn {
+    display:inline-flex; align-items:center; justify-content:center; gap:10px;
+    padding:16px 24px; border-radius:14px; text-decoration:none;
+    font-weight:700; font-size:1rem; transition:.2s; border:none; width:100%;
   }
+  .btn-primary { background:var(--green); color:#000; box-shadow:0 10px 25px rgba(0,200,83,.35); }
+  .btn-primary:active { transform:scale(.98); }
 
-  .logo {
-    font-family: 'Syne', sans-serif;
-    font-weight: 800;
-    font-size: 1.4rem;
-    color: var(--accent);
-    letter-spacing: -1px;
-    position: relative;
-  }
+  /* MAIN */
+  main { padding:72px 5% 60px; }
+  section { margin-bottom:52px; }
 
-  .logo::after {
-    content: '';
-    position: absolute;
-    bottom: -2px; left: 0;
-    width: 100%; height: 1px;
-    background: var(--accent);
-    transform: scaleX(0);
-    transition: transform 0.3s;
-  }
-  .logo:hover::after { transform: scaleX(1); }
-  .logo span { color: var(--text); }
-
-  .nav-cta {
-    background: var(--green);
-    color: #000;
-    font-weight: 700;
-    font-size: 0.85rem;
-    padding: 10px 22px;
-    border-radius: 100px;
-    text-decoration: none;
-    position: relative;
-    overflow: hidden;
-    transition: transform 0.2s;
-  }
-
-  .nav-cta::before {
-    content: '';
-    position: absolute;
-    top: 50%; left: 50%;
-    width: 0; height: 0;
-    background: rgba(255,255,255,0.3);
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    transition: width 0.4s, height 0.4s;
-  }
-  .nav-cta:hover::before { width: 200px; height: 200px; }
-  .nav-cta:hover { transform: scale(1.05); }
-
-  /* HERO */
-  .hero {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 120px 5% 80px;
-    position: relative;
-    overflow: hidden;
-    z-index: 1;
-  }
-
-  /* ORBITING GLOW BLOBS */
-  .blob {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(80px);
-    pointer-events: none;
-    opacity: 0.15;
-  }
-
-  .blob-1 {
-    width: 500px; height: 500px;
-    background: var(--green);
-    top: -100px; right: -150px;
-    animation: float1 8s ease-in-out infinite;
-  }
-
-  .blob-2 {
-    width: 300px; height: 300px;
-    background: #00BFFF;
-    bottom: 100px; left: -100px;
-    animation: float2 10s ease-in-out infinite;
-    opacity: 0.08;
-  }
-
-  .blob-3 {
-    width: 200px; height: 200px;
-    background: var(--accent);
-    top: 40%; right: 20%;
-    animation: float3 6s ease-in-out infinite;
-    opacity: 0.06;
-  }
-
-  @keyframes float1 {
-    0%, 100% { transform: translate(0, 0) scale(1); }
-    33% { transform: translate(-30px, 40px) scale(1.05); }
-    66% { transform: translate(20px, -20px) scale(0.95); }
-  }
-
-  @keyframes float2 {
-    0%, 100% { transform: translate(0, 0); }
-    50% { transform: translate(40px, -60px); }
-  }
-
-  @keyframes float3 {
-    0%, 100% { transform: translate(0, 0) rotate(0deg); }
-    50% { transform: translate(-20px, 30px) rotate(180deg); }
-  }
-
-  /* HERO TAG */
-  .hero-tag {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: rgba(0,200,83,0.1);
-    border: 1px solid rgba(0,200,83,0.3);
-    color: var(--green);
-    font-size: 0.78rem;
-    font-weight: 600;
-    padding: 6px 14px;
-    border-radius: 100px;
-    margin-bottom: 32px;
-    width: fit-content;
-    opacity: 0;
-    animation: fadeUp 0.8s 0.3s ease forwards;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-  }
-
-  .pulse {
-    width: 7px; height: 7px;
-    background: var(--green);
-    border-radius: 50%;
-    animation: pulse 1.5s infinite;
-    box-shadow: 0 0 6px var(--green);
-  }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; transform: scale(1); box-shadow: 0 0 6px var(--green); }
-    50% { opacity: 0.5; transform: scale(0.7); box-shadow: 0 0 2px var(--green); }
-  }
-
-  /* HERO HEADLINE — character by character feel */
-  h1 {
-    font-family: 'Syne', sans-serif;
-    font-size: clamp(3rem, 7.5vw, 6.5rem);
-    font-weight: 800;
-    line-height: 1.0;
-    letter-spacing: -3px;
-    max-width: 900px;
-    opacity: 0;
-    animation: fadeUp 0.9s 0.5s ease forwards;
-    position: relative;
-  }
-
-  h1 em {
-    font-style: normal;
-    color: transparent;
-    -webkit-text-stroke: 2px var(--accent);
-    position: relative;
-    display: inline-block;
-    animation: glitch 4s infinite;
-  }
-
-  @keyframes glitch {
-    0%, 90%, 100% { -webkit-text-stroke-color: var(--accent); text-shadow: none; }
-    92% { text-shadow: -3px 0 #FF0040; -webkit-text-stroke-color: var(--accent); }
-    94% { text-shadow: 3px 0 #00FFFF; -webkit-text-stroke-color: var(--accent); }
-    96% { text-shadow: none; }
-  }
-
-  /* HERO SUBTEXT */
-  .hero-sub {
-    font-size: clamp(0.95rem, 1.8vw, 1.15rem);
-    color: var(--muted);
-    max-width: 520px;
-    margin-top: 28px;
-    line-height: 1.85;
-    font-weight: 300;
-    opacity: 0;
-    animation: fadeUp 0.9s 0.7s ease forwards;
-  }
-
-  .hero-sub strong { color: var(--text); font-weight: 600; }
-
-  /* FOMO STRIP */
-  .fomo-strip {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    background: rgba(255,60,60,0.08);
-    border: 1px solid rgba(255,60,60,0.3);
-    color: #FF6B6B;
-    font-size: 0.85rem;
-    font-weight: 700;
-    padding: 8px 18px;
-    border-radius: 100px;
-    margin-top: 24px;
-    opacity: 0;
-    animation: fadeUp 0.9s 0.85s ease forwards;
-    letter-spacing: 0.5px;
-  }
-
-  .fomo-dot {
-    width: 8px; height: 8px;
-    background: #FF6B6B;
-    border-radius: 50%;
-    animation: pulse 1s infinite;
-    box-shadow: 0 0 8px #FF6B6B;
-  }
-
-  /* HERO ACTIONS */
-  .hero-actions {
-    display: flex;
-    gap: 16px;
-    margin-top: 40px;
-    flex-wrap: wrap;
-    opacity: 0;
-    animation: fadeUp 0.9s 1s ease forwards;
-  }
-
-  /* PRIMARY BTN — magnetic */
-  .btn-primary {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    background: var(--green);
-    color: #000;
-    font-weight: 700;
-    font-size: 1rem;
-    padding: 16px 32px;
-    border-radius: 100px;
-    text-decoration: none;
-    position: relative;
-    overflow: hidden;
-    transition: transform 0.2s, box-shadow 0.3s;
-    box-shadow: 0 0 30px rgba(0,200,83,0.4), 0 0 60px rgba(0,200,83,0.1);
-  }
-
-  .btn-primary::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, rgba(255,255,255,0.2), transparent);
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
-
-  .btn-primary:hover {
-    transform: translateY(-3px) scale(1.02);
-    box-shadow: 0 0 50px rgba(0,200,83,0.6), 0 0 100px rgba(0,200,83,0.2);
-  }
-
-  .btn-primary:hover::before { opacity: 1; }
-
-  /* SHIMMER on btn */
-  .btn-primary::after {
-    content: '';
-    position: absolute;
-    top: 0; left: -100%;
-    width: 60%; height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-    animation: shimmer 3s infinite;
-  }
-
-  @keyframes shimmer {
-    0% { left: -100%; }
-    100% { left: 200%; }
-  }
-
-  .btn-secondary {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    color: var(--text);
-    font-weight: 500;
-    font-size: 1rem;
-    padding: 16px 28px;
-    border-radius: 100px;
-    text-decoration: none;
-    border: 1px solid #2a2a2a;
-    transition: border-color 0.3s, background 0.3s, transform 0.2s;
-    backdrop-filter: blur(10px);
-  }
-  .btn-secondary:hover {
-    border-color: var(--green);
-    background: rgba(0,200,83,0.05);
-    transform: translateY(-2px);
-  }
-
-  /* SCROLL INDICATOR */
-  .scroll-hint {
-    position: absolute;
-    bottom: 40px; left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    opacity: 0;
-    animation: fadeUp 1s 1.5s ease forwards;
-  }
-
-  .scroll-hint span {
-    font-size: 0.7rem;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--muted);
-  }
-
-  .scroll-line {
-    width: 1px; height: 50px;
-    background: linear-gradient(to bottom, var(--green), transparent);
-    animation: scrollPulse 2s infinite;
-  }
-
-  @keyframes scrollPulse {
-    0%, 100% { opacity: 0.3; transform: scaleY(1); }
-    50% { opacity: 1; transform: scaleY(1.2); }
-  }
-
-  /* STAT STRIP — TICKER */
-  .stat-strip {
-    display: flex;
-    border-top: 1px solid rgba(0,200,83,0.1);
-    border-bottom: 1px solid rgba(0,200,83,0.1);
-    overflow: hidden;
-    position: relative;
-    z-index: 1;
-    background: rgba(0,200,83,0.02);
-  }
-
-  .stat {
-    flex: 1;
-    padding: 36px 5%;
-    border-right: 1px solid rgba(0,200,83,0.08);
-    position: relative;
-    overflow: hidden;
-  }
-  .stat:last-child { border-right: none; }
-
-  .stat::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: rgba(0,200,83,0);
-    transition: background 0.4s;
-  }
-  .stat:hover::before { background: rgba(0,200,83,0.03); }
-
-  .stat-num {
-    font-family: 'Syne', sans-serif;
-    font-size: clamp(1.6rem, 3.5vw, 2.6rem);
-    font-weight: 800;
-    color: var(--accent);
-    letter-spacing: -1px;
-    display: block;
-  }
-
-  .stat-label { font-size: 0.82rem; color: var(--muted); margin-top: 8px; line-height: 1.4; }
-
-  /* COUNTER animation */
-  .count-up { display: inline-block; }
-
-  /* SECTIONS */
-  section { padding: 110px 5%; position: relative; z-index: 1; }
-
+  /* SECTION LABELS */
   .section-tag {
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    color: var(--green);
-    margin-bottom: 16px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
+    color:var(--green); font-size:.7rem; font-weight:800;
+    text-transform:uppercase; letter-spacing:3px; margin-bottom:10px; display:block;
   }
+  .section-title { font-family:'Syne',sans-serif; font-size:1.8rem; letter-spacing:-1px; line-height:1.1; margin-bottom:6px; }
+  .section-title em { font-style:normal; color:var(--accent); }
+  .section-hint { font-size:.75rem; color:var(--muted); }
 
-  .section-tag::before {
-    content: '';
-    display: block;
-    width: 24px; height: 1px;
-    background: var(--green);
+  /* ═══════════════════════════
+     SECTION 1 — OFFER
+  ═══════════════════════════ */
+  .offer-card {
+    background:linear-gradient(160deg, rgba(0,200,83,.13) 0%, rgba(10,10,10,0) 60%);
+    border:1px solid rgba(0,200,83,.3); border-radius:24px;
+    padding:28px 20px; text-align:center; position:relative; overflow:hidden;
   }
-
-  h2 {
-    font-family: 'Syne', sans-serif;
-    font-size: clamp(2rem, 4.5vw, 3.2rem);
-    font-weight: 800;
-    letter-spacing: -1.5px;
-    line-height: 1.05;
-    max-width: 700px;
+  .offer-card::before {
+    content:''; position:absolute; top:0; left:0; right:0; height:2px;
+    background:linear-gradient(90deg, transparent, var(--accent), transparent);
+    animation:scanline 3s ease-in-out infinite;
   }
-  h2 em { font-style: normal; color: var(--accent); }
+  @keyframes scanline { 0%,100%{opacity:.25} 50%{opacity:1} }
 
-  /* WINNER CARDS */
-  .winner-section { background: #080808; }
+  .price { font-family:'Syne',sans-serif; font-size:3.8rem; color:var(--accent); line-height:1; margin:12px 0 4px; letter-spacing:-2px; }
+  .price-label { font-size:.85rem; color:var(--muted); margin-bottom:20px; display:block; }
 
-  .winner-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 1px;
-    margin-top: 56px;
-    background: rgba(0,200,83,0.08);
-    border-radius: 20px;
-    overflow: hidden;
-    border: 1px solid rgba(0,200,83,0.08);
+  .offer-desc { font-size:.88rem; color:var(--muted); line-height:1.7; margin-bottom:20px; text-align:left; }
+  .offer-desc strong { color:var(--text); }
+
+  .offer-list { text-align:left; list-style:none; margin:0 0 20px; }
+  .offer-list li { display:flex; align-items:flex-start; gap:10px; margin-bottom:13px; font-size:.9rem; line-height:1.45; }
+  .check { color:#000; background:var(--green); border-radius:50%; width:18px; height:18px; min-width:18px;
+    display:flex; align-items:center; justify-content:center; font-size:.6rem; font-weight:900; margin-top:2px; }
+
+  .bonus-tag {
+    display:inline-flex; align-items:center; gap:6px;
+    background:rgba(0,200,83,.08); border:1px solid rgba(0,200,83,.22);
+    color:var(--green); font-size:.78rem; font-weight:600;
+    padding:8px 14px; border-radius:10px; margin-bottom:20px;
+    animation:glow 3s ease-in-out infinite; width:100%; justify-content:center;
   }
+  @keyframes glow { 0%,100%{box-shadow:0 0 0 0 rgba(0,200,83,0)} 50%{box-shadow:0 0 0 6px rgba(0,200,83,.05)} }
+
+  /* ═══════════════════════════
+     SECTION 2 — WINNERS
+  ═══════════════════════════ */
+  .winner-scroll {
+    display:flex; gap:14px; overflow-x:auto; padding-bottom:16px;
+    scrollbar-width:none; scroll-snap-type:x mandatory;
+    margin:16px -5% 0; padding-left:5%; padding-right:5%;
+  }
+  .winner-scroll::-webkit-scrollbar { display:none; }
 
   .winner-card {
-    background: #080808;
-    padding: 32px 28px;
-    position: relative;
-    overflow: hidden;
-    transition: background 0.3s;
+    min-width:260px; background:rgba(255,255,255,.03);
+    padding:22px 20px; border-radius:20px;
+    border:1px solid rgba(255,255,255,.07);
+    scroll-snap-align:start; flex-shrink:0;
+    transition:border-color .3s;
   }
+  .winner-card:active { border-color:rgba(0,200,83,.3); }
 
-  .winner-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0;
-    width: 3px; height: 0;
-    background: var(--accent);
-    transition: height 0.4s ease;
-  }
-
-  .winner-card:hover { background: #0d0d0d; }
-  .winner-card:hover::before { height: 100%; }
-
-  .winner-card::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(circle at 50% 0%, rgba(0,255,106,0.04), transparent 70%);
-    opacity: 0;
-    transition: opacity 0.4s;
-  }
-  .winner-card:hover::after { opacity: 1; }
-
-  .winner-icon { font-size: 2rem; margin-bottom: 16px; display: block; }
-  .winner-niche {
-    font-size: 0.7rem;
-    font-weight: 700;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--green);
-    margin-bottom: 10px;
-  }
-  .winner-text { font-size: 0.85rem; color: var(--muted); line-height: 1.7; }
+  .winner-icon { font-size:1.8rem; margin-bottom:10px; display:block; }
+  .winner-niche { color:var(--green); font-size:.68rem; font-weight:700; text-transform:uppercase; letter-spacing:2px; margin-bottom:8px; }
+  .winner-text { font-size:.85rem; color:var(--muted); line-height:1.55; }
   .winner-result {
-    font-size: 0.9rem;
-    font-weight: 700;
-    color: var(--text);
-    margin-top: 16px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    font-size:.82rem; font-weight:700; margin-top:14px; color:#fff;
+    border-top:1px solid rgba(255,255,255,.06); padding-top:10px;
+    display:flex; align-items:center; gap:8px;
   }
-  .winner-result::before {
-    content: '';
-    display: block;
-    width: 16px; height: 1px;
-    background: var(--accent);
-  }
+  .winner-result::before { content:''; display:block; width:12px; height:1px; background:var(--accent); flex-shrink:0; }
 
-  /* NICHES */
-  .niches {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-    margin-top: 48px;
-  }
+  /* SCROLL INDICATOR DOTS */
+  .scroll-dots { display:flex; justify-content:center; gap:6px; margin-top:14px; }
+  .scroll-dot { width:5px; height:5px; border-radius:50%; background:rgba(255,255,255,.15); transition:.3s; }
+  .scroll-dot.active { background:var(--green); width:16px; border-radius:3px; }
 
-  .niche-pill {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background: rgba(255,255,255,0.03);
-    border: 1px solid #1f1f1f;
-    padding: 12px 22px;
-    border-radius: 100px;
-    font-size: 0.88rem;
-    font-weight: 500;
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
+  /* ═══════════════════════════
+     SECTION 3 — FINAL CTA
+  ═══════════════════════════ */
+  .cta-block {
+    background:rgba(0,200,83,.04);
+    border:1px solid rgba(0,200,83,.14);
+    border-radius:24px; padding:28px 20px; text-align:center;
+    position:relative; overflow:hidden;
+  }
+  .cta-block::before {
+    content:''; position:absolute; inset:0;
+    background:radial-gradient(circle at 50% 0%, rgba(0,200,83,.07), transparent 60%);
+    pointer-events:none;
   }
 
-  .niche-pill::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, rgba(0,200,83,0.1), transparent);
-    opacity: 0;
-    transition: opacity 0.3s;
+  .cta-block h2 {
+    font-family:'Syne',sans-serif; font-size:1.8rem;
+    letter-spacing:-1px; line-height:1.1; margin-bottom:16px; position:relative;
   }
+  .cta-block h2 em { font-style:normal; color:var(--accent); }
 
-  .niche-pill:hover {
-    border-color: var(--green);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(0,200,83,0.1);
+  .cta-body { font-size:.9rem; color:var(--muted); line-height:1.9; margin-bottom:20px; position:relative; text-align:left; }
+  .cta-body strong { color:var(--text); }
+  .cta-body .highlight { color:var(--accent); font-weight:700; }
+
+  .warning-pill {
+    display:inline-flex; align-items:center; gap:7px;
+    background:rgba(255,60,60,.08); border:1px solid rgba(255,60,60,.25);
+    color:#FF6B6B; font-size:.78rem; font-weight:700;
+    padding:7px 14px; border-radius:100px; margin-bottom:20px;
+    animation:warnpulse 2.5s ease-in-out infinite;
   }
-  .niche-pill:hover::before { opacity: 1; }
-  .niche-icon { font-size: 1.1rem; }
-
-  /* OFFER SECTION */
-  .offer-section { background: #060606; }
-
-  .offer-card {
-    background: linear-gradient(135deg, #111, #0d0d0d);
-    border: 1px solid #1e1e1e;
-    border-radius: 28px;
-    padding: 60px;
-    max-width: 720px;
-    position: relative;
-    overflow: hidden;
-    transition: border-color 0.4s, box-shadow 0.4s;
-  }
-
-  .offer-card:hover {
-    border-color: rgba(0,200,83,0.3);
-    box-shadow: 0 0 80px rgba(0,200,83,0.06);
-  }
-
-  /* Animated corner accent */
-  .offer-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0;
-    width: 120px; height: 120px;
-    background: conic-gradient(var(--accent), transparent 30%);
-    opacity: 0.12;
-    animation: rotateConic 8s linear infinite;
-    transform-origin: top left;
-  }
-
-  @keyframes rotateConic {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-  }
-
-  .offer-card::after {
-    content: '';
-    position: absolute;
-    bottom: -50px; right: -50px;
-    width: 200px; height: 200px;
-    background: radial-gradient(circle, rgba(0,200,83,0.08), transparent 70%);
-    pointer-events: none;
-  }
-
-  .offer-price {
-    font-family: 'Syne', sans-serif;
-    font-size: clamp(3rem, 6vw, 4.8rem);
-    font-weight: 800;
-    color: var(--accent);
-    letter-spacing: -2px;
-    line-height: 1;
-    position: relative;
-    z-index: 1;
-  }
-  .offer-price span {
-    font-size: 1.1rem;
-    color: var(--muted);
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 400;
-    letter-spacing: 0;
-  }
-
-  .offer-desc {
-    color: var(--muted);
-    margin: 14px 0 36px;
-    font-size: 1rem;
-    line-height: 1.7;
-    position: relative;
-    z-index: 1;
-  }
-
-  .offer-list {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-    margin-bottom: 40px;
-    position: relative;
-    z-index: 1;
-  }
-
-  .offer-list li {
-    display: flex;
-    align-items: flex-start;
-    gap: 14px;
-    font-size: 0.95rem;
-    line-height: 1.5;
-    opacity: 0;
-    transform: translateX(-10px);
-    transition: opacity 0.5s, transform 0.5s;
-  }
-
-  .offer-list li.visible { opacity: 1; transform: translateX(0); }
-
-  .check {
-    width: 22px; height: 22px;
-    background: rgba(0,200,83,0.15);
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0; margin-top: 1px;
-    color: var(--green);
-    font-size: 0.7rem;
-    font-weight: 700;
-    border: 1px solid rgba(0,200,83,0.3);
-    transition: background 0.3s, transform 0.2s;
-  }
-
-  .offer-list li:hover .check {
-    background: var(--green);
-    color: #000;
-    transform: scale(1.1);
-  }
-
-  .bonus-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: rgba(0,200,83,0.08);
-    border: 1px solid rgba(0,200,83,0.25);
-    color: var(--green);
-    font-size: 0.85rem;
-    font-weight: 600;
-    padding: 10px 18px;
-    border-radius: 12px;
-    margin-bottom: 32px;
-    position: relative;
-    z-index: 1;
-    animation: badgePulse 3s ease-in-out infinite;
-  }
-
-  @keyframes badgePulse {
-    0%, 100% { box-shadow: 0 0 0 0 rgba(0,200,83,0); }
-    50% { box-shadow: 0 0 0 6px rgba(0,200,83,0.06); }
-  }
-
-  /* STEPS */
-  .steps {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 1px;
-    margin-top: 64px;
-    background: rgba(255,255,255,0.04);
-    border-radius: 20px;
-    overflow: hidden;
-  }
-
-  .step {
-    background: var(--dark);
-    padding: 44px 32px;
-    position: relative;
-    overflow: hidden;
-    transition: background 0.3s;
-  }
-
-  .step:hover { background: #0d0d0d; }
-
-  .step::after {
-    content: '';
-    position: absolute;
-    bottom: 0; left: 0;
-    width: 0; height: 2px;
-    background: var(--accent);
-    transition: width 0.4s ease;
-  }
-  .step:hover::after { width: 100%; }
-
-  .step-num {
-    font-family: 'Syne', sans-serif;
-    font-size: 4rem;
-    font-weight: 800;
-    color: rgba(0,255,106,0.06);
-    line-height: 1;
-    margin-bottom: 24px;
-    transition: color 0.3s;
-  }
-  .step:hover .step-num { color: rgba(0,255,106,0.12); }
-
-  .step-title {
-    font-family: 'Syne', sans-serif;
-    font-size: 1.1rem;
-    font-weight: 700;
-    margin-bottom: 12px;
-  }
-  .step-desc { font-size: 0.875rem; color: var(--muted); line-height: 1.7; }
-
-  /* CTA SECTION */
-  .cta-section {
-    text-align: center;
-    background: #060606;
-    position: relative;
-    overflow: hidden;
-    z-index: 1;
-  }
-
-  /* Rotating ring */
-  .cta-section::before {
-    content: '';
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    width: 700px; height: 700px;
-    border-radius: 50%;
-    border: 1px solid rgba(0,200,83,0.06);
-    animation: ringExpand 4s ease-in-out infinite;
-    pointer-events: none;
-  }
-
-  .cta-section::after {
-    content: '';
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    width: 500px; height: 500px;
-    border-radius: 50%;
-    border: 1px solid rgba(0,200,83,0.04);
-    animation: ringExpand 4s ease-in-out 2s infinite;
-    pointer-events: none;
-  }
-
-  @keyframes ringExpand {
-    0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0; }
-    50% { opacity: 1; }
-    100% { transform: translate(-50%, -50%) scale(1.2); opacity: 0; }
-  }
-
-  .cta-glow {
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    width: 400px; height: 400px;
-    background: radial-gradient(circle, rgba(0,200,83,0.08), transparent 70%);
-    pointer-events: none;
-    animation: glowPulse 3s ease-in-out infinite;
-  }
-
-  @keyframes glowPulse {
-    0%, 100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1); }
-    50% { opacity: 1; transform: translate(-50%, -50%) scale(1.3); }
-  }
-
-  .cta-section h2 {
-    max-width: 100%;
-    margin: 0 auto 24px;
-    font-size: clamp(2.2rem, 5.5vw, 4.5rem);
-    position: relative;
-    z-index: 1;
-  }
-
-  .cta-body {
-    max-width: 600px;
-    margin: 0 auto 40px;
-    font-size: 1.05rem;
-    line-height: 1.9;
-    color: var(--muted);
-    position: relative;
-    z-index: 1;
-  }
-
-  .cta-body strong { color: var(--text); }
-  .cta-body .highlight {
-    color: var(--accent);
-    font-weight: 700;
-    position: relative;
-  }
-
-  .cta-body .highlight::after {
-    content: '';
-    position: absolute;
-    bottom: -2px; left: 0;
-    width: 100%; height: 1px;
-    background: var(--accent);
-    opacity: 0.5;
-  }
-
-  .cta-warning {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: rgba(255,60,60,0.08);
-    border: 1px solid rgba(255,60,60,0.3);
-    color: #FF6B6B;
-    font-size: 0.9rem;
-    font-weight: 700;
-    padding: 10px 24px;
-    border-radius: 100px;
-    margin-bottom: 36px;
-    position: relative;
-    z-index: 1;
-    animation: warningPulse 2s ease-in-out infinite;
-  }
-
-  @keyframes warningPulse {
-    0%, 100% { box-shadow: 0 0 0 0 rgba(255,60,60,0); }
-    50% { box-shadow: 0 0 0 8px rgba(255,60,60,0.05); }
-  }
-
-  /* BIG CTA BTN */
-  .btn-big {
-    display: inline-flex;
-    align-items: center;
-    gap: 12px;
-    background: var(--green);
-    color: #000;
-    font-weight: 800;
-    font-size: 1.1rem;
-    padding: 20px 44px;
-    border-radius: 100px;
-    text-decoration: none;
-    position: relative;
-    overflow: hidden;
-    transition: transform 0.2s, box-shadow 0.3s;
-    box-shadow:
-      0 0 40px rgba(0,200,83,0.5),
-      0 0 80px rgba(0,200,83,0.2),
-      0 0 120px rgba(0,200,83,0.05);
-    z-index: 1;
-    animation: btnFloat 3s ease-in-out infinite;
-  }
-
-  @keyframes btnFloat {
-    0%, 100% { transform: translateY(0); box-shadow: 0 0 40px rgba(0,200,83,0.5), 0 0 80px rgba(0,200,83,0.2); }
-    50% { transform: translateY(-6px); box-shadow: 0 10px 60px rgba(0,200,83,0.6), 0 0 100px rgba(0,200,83,0.25); }
-  }
-
-  .btn-big:hover {
-    animation: none;
-    transform: translateY(-4px) scale(1.03);
-    box-shadow: 0 0 60px rgba(0,200,83,0.7), 0 0 100px rgba(0,200,83,0.3);
-  }
-
-  .btn-big::after {
-    content: '';
-    position: absolute;
-    top: 0; left: -100%;
-    width: 60%; height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-    animation: shimmer 2.5s infinite;
-  }
-
-  /* FOOTER */
-  footer {
-    padding: 32px 5%;
-    border-top: 1px solid rgba(255,255,255,0.05);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 16px;
-    position: relative;
-    z-index: 1;
-  }
-  footer p { font-size: 0.78rem; color: #444; }
-
-  /* ANIMATIONS */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .reveal {
-    opacity: 0;
-    transform: translateY(40px);
-    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .reveal.visible { opacity: 1; transform: translateY(0); }
+  @keyframes warnpulse { 0%,100%{box-shadow:0 0 0 0 rgba(255,60,60,0)} 50%{box-shadow:0 0 0 8px rgba(255,60,60,.04)} }
 
   /* WA FLOAT */
   .wa-float {
-    position: fixed;
-    bottom: 28px; right: 28px;
-    width: 60px; height: 60px;
-    background: #25D366;
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    text-decoration: none;
-    z-index: 200;
-    transition: transform 0.2s;
-    opacity: 0;
-    animation: fadeUp 0.8s 2s ease forwards;
+    position:fixed; bottom:20px; right:20px; width:56px; height:56px;
+    background:#25D366; border-radius:50%; display:flex; align-items:center;
+    justify-content:center; text-decoration:none; z-index:999;
+    box-shadow:0 4px 20px rgba(37,211,102,.5);
   }
-
+  .wa-float svg { width:28px; height:28px; fill:white; position:relative; z-index:1; }
   .wa-float::before {
-    content: '';
-    position: absolute;
-    inset: -4px;
-    border-radius: 50%;
-    border: 2px solid rgba(37,211,102,0.4);
-    animation: waPing 2s ease-out infinite;
+    content:''; position:absolute; inset:-5px; border-radius:50%;
+    border:2px solid rgba(37,211,102,.35); animation:ping 2s ease-out infinite;
   }
-
   .wa-float::after {
-    content: '';
-    position: absolute;
-    inset: -8px;
-    border-radius: 50%;
-    border: 1px solid rgba(37,211,102,0.2);
-    animation: waPing 2s ease-out 0.5s infinite;
+    content:''; position:absolute; inset:-10px; border-radius:50%;
+    border:1px solid rgba(37,211,102,.15); animation:ping 2s ease-out .6s infinite;
   }
+  @keyframes ping { 0%{transform:scale(1);opacity:1} 100%{transform:scale(1.6);opacity:0} }
 
-  @keyframes waPing {
-    0% { transform: scale(1); opacity: 1; }
-    100% { transform: scale(1.6); opacity: 0; }
-  }
-
-  .wa-float:hover { transform: scale(1.1) rotate(-10deg); }
-  .wa-float svg { width: 30px; height: 30px; fill: white; position: relative; z-index: 1; }
-
-  /* MOBILE */
-  /* MOBILE FIRST OVERRIDES */
-  .cursor, .cursor-ring { display: none; }
-  body { cursor: auto; }
-
-  @media (max-width: 640px) {
-    .stat-strip { flex-direction: column; }
-    .stat { border-right: none; border-bottom: 1px solid rgba(0,200,83,0.08); }
-    .offer-card { padding: 32px 24px; }
-    footer { flex-direction: column; text-align: center; }
-    .scroll-hint { display: none; }
-    h1 { letter-spacing: -2px; font-size: clamp(2.4rem, 10vw, 4rem); }
-    .hero { padding: 100px 5% 60px; min-height: auto; }
-    section { padding: 60px 5%; }
-    .winner-grid { grid-template-columns: 1fr; }
-    .winner-section { overflow-x: hidden; }
-    /* Make winner cards scroll horizontally on mobile */
-    .winner-grid {
-      display: flex;
-      gap: 15px;
-      overflow-x: auto;
-      padding-bottom: 20px;
-      scrollbar-width: none;
-      scroll-snap-type: x mandatory;
-      flex-wrap: nowrap;
-    }
-    .winner-grid::-webkit-scrollbar { display: none; }
-    .winner-card {
-      min-width: 280px;
-      scroll-snap-align: center;
-      flex-shrink: 0;
-    }
-    .niches { gap: 8px; }
-    .niche-pill { padding: 10px 16px; font-size: 0.82rem; }
-    .offer-price { font-size: 2.8rem; }
-    .steps { grid-template-columns: 1fr; }
-    .cta-section h2 { font-size: 2rem; }
-    .btn-big { font-size: 1rem; padding: 16px 28px; }
-    nav { padding: 10px 5%; }
-  }
-
-  @media (min-width: 641px) {
-    .winner-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    }
-  }
+  footer { text-align:center; padding:20px 5% 40px; color:#3a3a3a; font-size:.7rem; }
+  @media (min-width:768px) { main { max-width:560px; margin:0 auto; } }
 </style>
 </head>
 <body>
 
-<!-- CURSOR -->
-<div class="cursor" id="cursor"></div>
-<div class="cursor-ring" id="cursorRing"></div>
-
-<!-- GRID BG -->
-<div class="grid-bg"></div>
+<div class="bg-wrapper"><div class="grid-bg"></div></div>
 
 <!-- NAV -->
 <nav>
   <div class="logo">AdsPro<span>KE</span> 🇰🇪</div>
-  <a href="https://chat.whatsapp.com/ICxJ7ujpxwY7VguIvQYix2" target="_blank" class="nav-cta">Join the Group →</a>
+  <a href="https://chat.whatsapp.com/ICxJ7ujpxwY7VguIvQYix2" class="nav-link">JOIN GROUP →</a>
 </nav>
 
-<!-- HERO -->
-<section class="hero">
-  <div class="blob blob-1"></div>
-  <div class="blob blob-2"></div>
-  <div class="blob blob-3"></div>
+<main>
 
-  <div class="hero-tag">
-    <div class="pulse"></div>
-    The Future Is Local — Digital Ads 🇰🇪
-  </div>
+  <!-- ═══ SECTION 1: OFFER ═══ -->
+  <section id="offer">
+    <span class="section-tag">The Offer</span>
+    <div class="section-title">Everything done for you.<br><em>One flat price.</em></div>
 
-  <h1>Other Businesses<br>Are Winning.<br><em>Are You?</em></h1>
-
-  <p class="hero-sub">
-    <strong>Your competitors are running Meta ads right now.</strong> Some are doing it right. Most aren't. This is your moment to come in, set up properly, and take that space before they figure it out.<br><br>
-    We set up your entire campaign so you can focus on your customers and your business operations. <strong>You don't lift a finger. Not even once.</strong>
-  </p>
-
-  <div class="fomo-strip">
-    <div class="fomo-dot"></div>
-    This is your moment to shine. Don't blink.
-  </div>
-
-  <div class="hero-actions">
-    <a href="https://chat.whatsapp.com/ICxJ7ujpxwY7VguIvQYix2" target="_blank" class="btn-primary">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-      Join the Winners — WhatsApp Group
-    </a>
-    <a href="#offer" class="btn-secondary">See the Offer ↓</a>
-  </div>
-
-  <div class="scroll-hint">
-    <span>Scroll</span>
-    <div class="scroll-line"></div>
-  </div>
-</section>
-
-<!-- STATS -->
-<div class="stat-strip">
-  <div class="stat reveal">
-    <span class="stat-num" data-target="47">0</span><span class="stat-num">B+</span>
-    <div class="stat-label">KES spent on digital ads by Kenyan businesses annually</div>
-  </div>
-  <div class="stat reveal">
-    <span class="stat-num" data-target="60">0</span><span class="stat-num">%+</span>
-    <div class="stat-label">Of SME Meta ad budgets wasted — poor targeting, weak creatives</div>
-  </div>
-  <div class="stat reveal">
-    <span class="stat-num" data-target="3">0</span><span class="stat-num">.2M+</span>
-    <div class="stat-label">Kenyan businesses active on Meta — most not optimised</div>
-  </div>
-  <div class="stat reveal">
-    <span class="stat-num">KES 10K</span>
-    <div class="stat-label">All-in setup. No hidden costs. You don't lift a finger.</div>
-  </div>
-</div>
-
-<!-- WINNERS -->
-<section class="winner-section">
-  <div class="section-tag">Who's Already Winning</div>
-  <h2>Businesses like yours are <em>already ahead.</em></h2>
-  <div class="winner-grid">
-    <div class="winner-card reveal">
-      <span class="winner-icon">🏥</span>
-      <div class="winner-niche">Clinic — Nairobi</div>
-      <div class="winner-text">Running properly targeted ads reaching patients in their specific area. Bookings are coming in consistently.</div>
-      <div class="winner-result">Steady patient flow every week</div>
-    </div>
-    <div class="winner-card reveal">
-      <span class="winner-icon">🏡</span>
-      <div class="winner-niche">Real Estate — Kenya</div>
-      <div class="winner-text">Plot listings reaching serious buyers — not random scrollers. Enquiries from people with actual budget.</div>
-      <div class="winner-result">Quality leads, faster closings</div>
-    </div>
-    <div class="winner-card reveal">
-      <span class="winner-icon">🛎️</span>
-      <div class="winner-niche">AirBnB — Nairobi</div>
-      <div class="winner-text">Calendar filling up with bookings from targeted ads reaching travellers and weekend guests directly.</div>
-      <div class="winner-result">Higher occupancy, more revenue</div>
-    </div>
-    <div class="winner-card reveal">
-      <span class="winner-icon">👗</span>
-      <div class="winner-niche">Fashion Store — Kenya</div>
-      <div class="winner-text">New customers discovering the brand every day through creatives that actually stop the scroll.</div>
-      <div class="winner-result">DMs and orders flowing in</div>
-    </div>
-    <div class="winner-card reveal">
-      <span class="winner-icon">💅🏻</span>
-      <div class="winner-niche">Salon & Beauty — Nairobi</div>
-      <div class="winner-text">Appointment slots filling up. The right audience — people in their area, ready to book — seeing their ads.</div>
-      <div class="winner-result">Full bookings every week</div>
-    </div>
-    <div class="winner-card reveal">
-      <span class="winner-icon">📱</span>
-      <div class="winner-niche">Electronics — Kenya</div>
-      <div class="winner-text">Products in front of buyers who are actively searching. Sales coming in without chasing anyone.</div>
-      <div class="winner-result">Consistent daily sales</div>
-    </div>
-  </div>
-</section>
-
-<!-- WHO WE SERVE -->
-<section>
-  <div class="section-tag">Who We Serve</div>
-  <h2>Your industry. Your market.<br><em>Your moment.</em></h2>
-  <div class="niches">
-    <div class="niche-pill reveal"><span class="niche-icon">🏥</span> Clinics & Hospitals</div>
-    <div class="niche-pill reveal"><span class="niche-icon">🛋️</span> Furniture Stores</div>
-    <div class="niche-pill reveal"><span class="niche-icon">👗</span> Clothing & Fashion</div>
-    <div class="niche-pill reveal"><span class="niche-icon">🏡</span> Real Estate & Plots</div>
-    <div class="niche-pill reveal"><span class="niche-icon">🏠</span> AirBnB & Rentals</div>
-    <div class="niche-pill reveal"><span class="niche-icon">💅🏻✂️🧖🏼‍♀️</span> Beauty & Hair Salons</div>
-    <div class="niche-pill reveal"><span class="niche-icon">📱</span> Electronics</div>
-  </div>
-</section>
-
-<!-- OFFER -->
-<section class="offer-section" id="offer">
-  <div class="section-tag">The Offer</div>
-  <h2>Everything done for you.<br><em>One flat price.</em></h2>
-  <br><br>
-  <div class="offer-card reveal">
-    <div class="offer-price">KES 10,000 <span>one-time setup</span></div>
-    <p class="offer-desc">A complete, professional Meta ads setup built specifically for your business. No templates. No guesswork. You don't lift a finger — not even once.</p>
-    <ul class="offer-list">
-      <li><div class="check">✓</div> Scroll-stopping ad creatives designed for your audience</li>
-      <li><div class="check">✓</div> Persuasive copy written specifically for your customer</li>
-      <li><div class="check">✓</div> Laser-focused audience targeting — right people, right time</li>
-      <li><div class="check">✓</div> Full Meta campaign build and launch</li>
-    </ul>
-    <div class="bonus-badge">🎁 &nbsp; FREE 30-Day Campaign Monitoring & Management</div>
     <br>
-    <a href="https://chat.whatsapp.com/ICxJ7ujpxwY7VguIvQYix2" target="_blank" class="btn-primary">
-      I'm Ready — Let's Go →
-    </a>
-  </div>
-</section>
 
-<!-- HOW IT WORKS -->
-<section>
-  <div class="section-tag">How It Works</div>
-  <h2>Simple process.<br><em>Real results.</em></h2>
-  <div class="steps">
-    <div class="step reveal">
-      <div class="step-num">01</div>
-      <div class="step-title">You Join the Group</div>
-      <div class="step-desc">Request to join our WhatsApp group. Answer 4 quick questions so we understand your business.</div>
-    </div>
-    <div class="step reveal">
-      <div class="step-num">02</div>
-      <div class="step-title">We Build Everything</div>
-      <div class="step-desc">Creatives, copy, targeting, campaign structure — fully built and ready to launch. You don't touch a thing.</div>
-    </div>
-    <div class="step reveal">
-      <div class="step-num">03</div>
-      <div class="step-title">We Launch & Monitor</div>
-      <div class="step-desc">Your campaign goes live. We watch it daily for 30 days — optimising as we go.</div>
-    </div>
-    <div class="step reveal">
-      <div class="step-num">04</div>
-      <div class="step-title">You Focus on Business</div>
-      <div class="step-desc">Serve your customers. Close your deals. Run your operations. The ads are completely taken care of.</div>
-    </div>
-  </div>
-</section>
+    <div class="offer-card">
+      <div class="price">10K</div>
+      <span class="price-label">KES — One-time setup fee</span>
 
-<!-- BIG CTA -->
-<section class="cta-section">
-  <div class="cta-glow"></div>
-  <div class="section-tag" style="justify-content:center;">This Is Your Moment</div>
-  <h2>Join the winners.<br><em>We're waiting. 🚀</em></h2>
-  <div class="cta-body">
-    Other businesses in this country are already running proper ads and winning customers <strong>every single day.</strong> The future is local — and digital ads are how local businesses shine right now.<br><br>
-    We set up your campaign. We monitor it. We optimise it. <span class="highlight">You don't lift a finger. Not even once.</span><br><br>
-    Join our group now and be a winner like other businesses across Kenya. <strong>We're waiting for you from the other side.</strong>
-  </div>
-  <div class="cta-warning">
-    ⚠️ &nbsp; Usiseme hukuambiwa.
-  </div>
-  <br><br>
-  <a href="https://chat.whatsapp.com/ICxJ7ujpxwY7VguIvQYix2" target="_blank" class="btn-big">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-    Join the WhatsApp Group Now
-  </a>
-</section>
+      <p class="offer-desc">
+        A complete, professional Meta ads setup built for your business and your market.
+        No templates. No guesswork. <strong>You don't lift a finger — not even once.</strong>
+        You stay focused on closing deals and running your business. We handle everything digital.
+      </p>
 
-<!-- FOOTER -->
-<footer>
-  <div class="logo">AdsPro<span>KE</span> 🇰🇪</div>
-  <p>© 2026 AdsPro KE. Built for Kenyan SMEs.</p>
-  <p>🇰🇪 Kenya</p>
-</footer>
+      <ul class="offer-list">
+        <li><span class="check">✓</span> Scroll-stopping ad creatives designed for your audience</li>
+        <li><span class="check">✓</span> Persuasive copy written specifically for your customer</li>
+        <li><span class="check">✓</span> Laser-focused audience targeting — right people, right time</li>
+        <li><span class="check">✓</span> Full Meta campaign build and launch</li>
+      </ul>
+
+      <div class="bonus-tag">🎁 FREE 30-Day Campaign Monitoring & Management</div>
+
+      <a href="https://chat.whatsapp.com/ICxJ7ujpxwY7VguIvQYix2" class="btn btn-primary">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        I'm Ready — Join the Group
+      </a>
+    </div>
+  </section>
+
+  <!-- ═══ SECTION 2: WINNERS ═══ -->
+  <section id="winners">
+    <span class="section-tag">Who's Already Winning</span>
+    <div class="section-title">Businesses like yours <em>already ahead.</em></div>
+    <p class="section-hint">Swipe to see who's winning ➔</p>
+
+    <div class="winner-scroll" id="winnerScroll">
+
+      <div class="winner-card">
+        <span class="winner-icon">🏥</span>
+        <div class="winner-niche">Clinic — Nairobi</div>
+        <p class="winner-text">Running properly targeted ads reaching patients in their specific area. Bookings coming in consistently without chasing anyone.</p>
+        <div class="winner-result">Steady patient flow every week</div>
+      </div>
+
+      <div class="winner-card">
+        <span class="winner-icon">🏡</span>
+        <div class="winner-niche">Real Estate — Kenya</div>
+        <p class="winner-text">Plot listings reaching serious buyers — not random scrollers. Enquiries from people with actual budget, ready to commit.</p>
+        <div class="winner-result">Quality leads, faster closings</div>
+      </div>
+
+      <div class="winner-card">
+        <span class="winner-icon">🛎️</span>
+        <div class="winner-niche">AirBnB — Nairobi</div>
+        <p class="winner-text">Calendar filling up with bookings from targeted ads reaching travellers and weekend guests directly where they scroll.</p>
+        <div class="winner-result">Higher occupancy, more revenue</div>
+      </div>
+
+      <div class="winner-card">
+        <span class="winner-icon">👗</span>
+        <div class="winner-niche">Fashion Store — Kenya</div>
+        <p class="winner-text">New customers discovering the brand every day through creatives that stop the scroll and drive real action.</p>
+        <div class="winner-result">DMs and orders flowing in</div>
+      </div>
+
+      <div class="winner-card">
+        <span class="winner-icon">💅🏻</span>
+        <div class="winner-niche">Salon & Beauty — Nairobi</div>
+        <p class="winner-text">Appointment slots filling up every week. The right audience in their area, ready to book, seeing their ads.</p>
+        <div class="winner-result">Fully booked every week</div>
+      </div>
+
+      <div class="winner-card">
+        <span class="winner-icon">📱</span>
+        <div class="winner-niche">Electronics — Kenya</div>
+        <p class="winner-text">Products in front of buyers actively searching and ready to spend. Sales coming in without chasing anyone.</p>
+        <div class="winner-result">Consistent daily sales</div>
+      </div>
+
+      <div class="winner-card">
+        <span class="winner-icon">🛋️</span>
+        <div class="winner-niche">Furniture — Kenya</div>
+        <p class="winner-text">Showroom visits and enquiries from homeowners and movers actively looking to furnish. Right targeting changes everything.</p>
+        <div class="winner-result">Showroom visits up, deals closing</div>
+      </div>
+
+    </div>
+
+    <div class="scroll-dots" id="scrollDots">
+      <div class="scroll-dot active"></div>
+      <div class="scroll-dot"></div>
+      <div class="scroll-dot"></div>
+      <div class="scroll-dot"></div>
+      <div class="scroll-dot"></div>
+      <div class="scroll-dot"></div>
+      <div class="scroll-dot"></div>
+    </div>
+  </section>
+
+  <!-- ═══ SECTION 3: FINAL CTA ═══ -->
+  <section id="cta">
+    <div class="cta-block">
+      <span class="section-tag" style="display:block;margin-bottom:12px;">This Is Your Moment</span>
+      <h2>Join the winners.<br><em>We're waiting. 🚀</em></h2>
+
+      <p class="cta-body">
+        Other businesses in this country are already running proper ads and winning customers <strong>every single day.</strong> The future is local — and digital ads are how local businesses shine right now.<br><br>
+        We set up your campaign. We monitor it. We optimise it. <span class="highlight">You don't lift a finger. Not even once.</span><br><br>
+        Join our group now and be a winner like other businesses across Kenya. <strong>We're waiting for you from the other side.</strong>
+      </p>
+
+      <div class="warning-pill">
+        ⚠️ &nbsp; Usiseme hukuambiwa.
+      </div>
+
+      <a href="https://chat.whatsapp.com/ICxJ7ujpxwY7VguIvQYix2" class="btn btn-primary">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Join the WhatsApp Group Now
+      </a>
+    </div>
+  </section>
+
+</main>
+
+<footer>© 2026 AdsPro KE — Built for Kenyan SMEs 🇰🇪</footer>
 
 <!-- WA FLOAT -->
-<a href="https://chat.whatsapp.com/ICxJ7ujpxwY7VguIvQYix2" target="_blank" class="wa-float" title="Join WhatsApp Group">
-  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+<a href="https://chat.whatsapp.com/ICxJ7ujpxwY7VguIvQYix2" class="wa-float" title="Join WhatsApp Group">
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
 </a>
 
 <script>
-  // CUSTOM CURSOR
-  const cursor = document.getElementById('cursor');
-  const ring = document.getElementById('cursorRing');
-  let mx = 0, my = 0, rx = 0, ry = 0;
+  // Scroll dot indicators for winner cards
+  const scroll = document.getElementById('winnerScroll');
+  const dots = document.querySelectorAll('.scroll-dot');
 
-  document.addEventListener('mousemove', e => {
-    mx = e.clientX; my = e.clientY;
-    cursor.style.left = mx + 'px';
-    cursor.style.top = my + 'px';
-  });
-
-  // Smooth ring follow
-  function animateRing() {
-    rx += (mx - rx) * 0.12;
-    ry += (my - ry) * 0.12;
-    ring.style.left = rx + 'px';
-    ring.style.top = ry + 'px';
-    requestAnimationFrame(animateRing);
-  }
-  animateRing();
-
-  // Cursor scale on hover
-  document.querySelectorAll('a, button').forEach(el => {
-    el.addEventListener('mouseenter', () => {
-      cursor.style.width = '20px';
-      cursor.style.height = '20px';
-      ring.style.width = '60px';
-      ring.style.height = '60px';
-    });
-    el.addEventListener('mouseleave', () => {
-      cursor.style.width = '12px';
-      cursor.style.height = '12px';
-      ring.style.width = '40px';
-      ring.style.height = '40px';
-    });
-  });
-
-  // SCROLL REVEAL
-  const reveals = document.querySelectorAll('.reveal');
-  const revealObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry, i) => {
-      if (entry.isIntersecting) {
-        setTimeout(() => entry.target.classList.add('visible'), i * 80);
-      }
-    });
-  }, { threshold: 0.1 });
-  reveals.forEach(el => revealObserver.observe(el));
-
-  // OFFER LIST staggered reveal
-  const offerItems = document.querySelectorAll('.offer-list li');
-  const listObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        offerItems.forEach((item, i) => {
-          setTimeout(() => item.classList.add('visible'), i * 150);
-        });
-      }
-    });
-  }, { threshold: 0.3 });
-  if (offerItems.length) listObserver.observe(offerItems[0].closest('ul'));
-
-  // COUNTER ANIMATION
-  function animateCounter(el, target, suffix) {
-    let start = 0;
-    const duration = 2000;
-    const step = target / (duration / 16);
-    const timer = setInterval(() => {
-      start += step;
-      if (start >= target) {
-        el.textContent = target;
-        clearInterval(timer);
-      } else {
-        el.textContent = Math.floor(start);
-      }
-    }, 16);
-  }
-
-  const counters = document.querySelectorAll('[data-target]');
-  const counterObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const target = parseInt(entry.target.dataset.target);
-        animateCounter(entry.target, target);
-        counterObserver.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.5 });
-  counters.forEach(c => counterObserver.observe(c));
-
-  // PARALLAX on blobs
-  document.addEventListener('mousemove', e => {
-    const x = (e.clientX / window.innerWidth - 0.5) * 30;
-    const y = (e.clientY / window.innerHeight - 0.5) * 30;
-    document.querySelector('.blob-1').style.transform = `translate(${x * 0.5}px, ${y * 0.5}px)`;
-    document.querySelector('.blob-2').style.transform = `translate(${-x * 0.3}px, ${-y * 0.3}px)`;
-    document.querySelector('.blob-3').style.transform = `translate(${x * 0.8}px, ${y * 0.8}px)`;
-  });
+  scroll.addEventListener('scroll', () => {
+    const cards = scroll.querySelectorAll('.winner-card');
+    const scrollLeft = scroll.scrollLeft;
+    const cardWidth = cards[0].offsetWidth + 14; // gap
+    const active = Math.round(scrollLeft / cardWidth);
+    dots.forEach((d, i) => d.classList.toggle('active', i === active));
+  }, { passive: true });
 </script>
+
 </body>
 </html>
